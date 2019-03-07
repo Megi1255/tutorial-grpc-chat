@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package pb;
+
+import "google/protobuf/empty.proto";
+
+service chatService {
+    rpc send(Message) returns (google.protobuf.Empty) {}
+    rpc subscribe(google.protobuf.Empty) returns (stream Message) {}
+}
+
+message Message {
+    string id = 1;
+    string text = 2;
+}
