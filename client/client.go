@@ -5,6 +5,7 @@ import (
 	"flag"
 	"fmt"
 	"github.com/golang/protobuf/ptypes/empty"
+	"github.com/riimi/tutorial-grpc-chat/pb"
 	"github.com/zserge/lorca"
 	"google.golang.org/grpc"
 	"io"
@@ -12,7 +13,6 @@ import (
 	"log"
 	"net/url"
 	"os"
-	"tutorial-grpc-chat/pb"
 )
 
 type ChatClient struct {

@@ -2,7 +2,7 @@ package main
 
 import (
 	"errors"
-	"github.com/tutorial-grpc-chat/pb"
+	"github.com/riimi/tutorial-grpc-chat/pb"
 	"sync"
 )
 
