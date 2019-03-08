@@ -2,8 +2,8 @@ package main
 
 import (
 	"errors"
+	"github.com/tutorial-grpc-chat/pb"
 	"sync"
-	"tutorial-grpc-chat/pb"
 )
 
 type Session struct {

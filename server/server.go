@@ -12,7 +12,7 @@ import (
 	"net"
 	"sync"
 
-	"tutorial-grpc-chat/pb"
+	"github.com/tutorial-grpc-chat/pb"
 )
 
 //go:generate protoc -I ../pb chat.proto --go_out=plugins=grpc:../pb

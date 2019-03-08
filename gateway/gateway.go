@@ -5,10 +5,10 @@ import (
 	"flag"
 	"fmt"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
+	gw "github.com/tutorial-grpc-chat/pb"
 	"google.golang.org/grpc"
 	"log"
 	"net/http"
-	gw "tutorial-grpc-chat/pb"
 )
 
 var (
