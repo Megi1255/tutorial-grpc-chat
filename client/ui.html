@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <meta charset='utf-8'>
+    <link type="text/css" rel="stylesheet" href="https://unpkg.com/bootstrap/dist/css/bootstrap.min.css" />
+    <link
+            type="text/css"
+            rel="stylesheet"
+            href="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.css"
+    />
+
+    <script src="https://unpkg.com/@babel/polyfill@latest/dist/polyfill.min.js"></script>
+    <script src="https://unpkg.com/vue@latest/dist/vue.min.js"></script>
+    <script src="https://unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.js"></script>
+</head>
+<body>
+<div id="app">
+    <b-container fluid>
+        <b-form @submit="onSubmit">
+            <b-button onclick="subscribe()" v-if="connected === false">Connect</b-button>
+            <b-form-input v-model="text1" type="text" placeholder="Message"></b-form-input>
+            <!---<div class="mt-2">Value: {{ text1 }}</div>--->
+        </b-form>
+        <my-message md="12" v-for="msg in messages" :key="msg.id" :msg="msg.text"></my-message>
+    </b-container>
+</div>
+<script>
+    Vue.component('my-message', {
+        template: '<b-alert show>{{ msg }}</b-alert>',
+        props: ['msg']
+    })
+    window.app = new Vue({
+        el: "#app",
+        data: {
+            text1: '',
+            messages: [],
+            nextmId: 1,
+            connected: false
+        },
+        methods: {
+            onSubmit(evt) {
+                evt.preventDefault();
+                send(this.text1)
+            },
+            pushMessage(msg) {
+                this.messages.unshift({
+                    id: this.nextmId,
+                    text: msg
+                });
+                this.nextmId += 1;
+                this.text1 = '';
+            }
+        }
+    })
+</script>
+</body>
+</html>
