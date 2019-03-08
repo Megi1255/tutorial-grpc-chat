@@ -17,6 +17,7 @@ var (
 )
 
 func main() {
+	flag.Parse()
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
@@ -25,5 +26,5 @@ func main() {
 	if err := gw.RegisterChatServiceHandlerFromEndpoint(ctx, mux, *EndPoint, opts); err != nil {
 		log.Fatal(err)
 	}
-	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%s", *port), mux))
+	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", *port), mux))
 }

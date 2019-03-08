@@ -14,7 +14,7 @@ class ChatGateway
         if (static::$is_initialized == true) {
           return;
         }
-        \GPBMetadata\Google\Api\Annotations::initOnce();
+        //\GPBMetadata\Google\Api\Annotations::initOnce();
         \GPBMetadata\Google\Protobuf\GPBEmpty::initOnce();
         $pool->internalAddGeneratedFile(hex2bin(
             "0a98020a12636861742d676174657761792e70726f746f120270621a1b67" .

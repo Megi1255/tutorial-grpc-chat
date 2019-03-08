@@ -16,6 +16,7 @@ class ComposerStaticInit2ebddedc53dcc6e4f232ecda53abc575
             'Grpc\\' => 5,
             'Google\\Protobuf\\' => 16,
             'GPBMetadata\\Google\\Protobuf\\' => 28,
+            'GPBMetadata\\' => 12,
         ),
     );
 
@@ -35,6 +36,10 @@ class ComposerStaticInit2ebddedc53dcc6e4f232ecda53abc575
         'GPBMetadata\\Google\\Protobuf\\' => 
         array (
             0 => __DIR__ . '/..' . '/google/protobuf/src/GPBMetadata/Google/Protobuf',
+        ),
+        'GPBMetadata\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/GPBMetadata',
         ),
     );
 
