@@ -12,7 +12,7 @@ import (
 	"net"
 	"sync"
 
-	"tutorial-grpc-chat/pb"
+	"github.com/tutorial-grpc-chat/pb"
 )
 
 //go:generate protoc -I ../pb chat.proto --go_out=plugins=grpc:../pb
@@ -37,12 +37,16 @@ func (s *ChatServer) Run(ctx context.Context) {
 	for {
 		select {
 		case msg := <-s.Broadcast:
-			s.LogHandler(nil, fmt.Sprintf("[broadcast] %v", *msg))
+			sender, err := s.SessionByID(msg.Id)
+			if err != nil {
+				s.ErrorHandler(sender, err)
+			}
 			s.m.RLock()
 			for _, sess := range s.Gophers {
 				sess.writeMessage(msg)
 			}
 			s.m.RUnlock()
+			s.LogHandler(sender, fmt.Sprintf("[broadcast] %v", *msg))
 		case sess := <-s.Connect:
 			s.LogHandler(sess, "[connect]")
 			s.m.Lock()
@@ -67,8 +71,8 @@ func (s *ChatServer) Run(ctx context.Context) {
 
 func (s *ChatServer) generateRandomId(n int) string {
 	const letterBytes = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+	b := make([]byte, n)
 	for {
-		b := make([]byte, n)
 		for i := range b {
 			b[i] = letterBytes[rand.Intn(len(letterBytes))]
 		}
@@ -110,7 +114,7 @@ func (s *ChatServer) SessionByID(id string) (*Session, error) {
 	defer s.m.RUnlock()
 	sess, ok := s.Gophers[id]
 	if !ok {
-		return nil, ErrNotValidSession
+		return &Session{Id: id}, ErrNotValidSession
 	}
 	return sess, nil
 }
@@ -134,7 +138,7 @@ func main() {
 	}
 	gs.LogHandler = func(sess *Session, msg string) {
 		if sess != nil {
-			log.Print(*sess)
+			log.Printf("SessionId(%s) ", sess.Id)
 		}
 		log.Print(msg)
 	}

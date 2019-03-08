@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package pb;
+
+import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+
+service chatService {
+    rpc send(Message) returns (google.protobuf.Empty) {
+        option (google.api.http) = {
+            post: "/v1/chatserver/send"
+            body: "*"
+        };
+    }
+    rpc subscribe(google.protobuf.Empty) returns (stream Message) {
+        option (google.api.http) = {
+            post: "/v1/chatserver/subscribe"
+            body: "*"
+        };
+    }
+}
+
+message Message {
+    string id = 1;
+    string text = 2;
+}
