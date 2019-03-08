@@ -6,14 +6,43 @@ namespace Composer\Autoload;
 
 class ComposerStaticInit2ebddedc53dcc6e4f232ecda53abc575
 {
-    public static $fallbackDirsPsr4 = array (
-        0 => __DIR__ . '/../..' . '/Pb',
+    public static $prefixLengthsPsr4 = array (
+        'P' => 
+        array (
+            'Pb\\' => 3,
+        ),
+        'G' => 
+        array (
+            'Grpc\\' => 5,
+            'Google\\Protobuf\\' => 16,
+            'GPBMetadata\\Google\\Protobuf\\' => 28,
+        ),
+    );
+
+    public static $prefixDirsPsr4 = array (
+        'Pb\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/Pb',
+        ),
+        'Grpc\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/grpc/grpc/src/lib',
+        ),
+        'Google\\Protobuf\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/google/protobuf/src/Google/Protobuf',
+        ),
+        'GPBMetadata\\Google\\Protobuf\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/google/protobuf/src/GPBMetadata/Google/Protobuf',
+        ),
     );
 
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->fallbackDirsPsr4 = ComposerStaticInit2ebddedc53dcc6e4f232ecda53abc575::$fallbackDirsPsr4;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit2ebddedc53dcc6e4f232ecda53abc575::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit2ebddedc53dcc6e4f232ecda53abc575::$prefixDirsPsr4;
 
         }, null, ClassLoader::class);
     }

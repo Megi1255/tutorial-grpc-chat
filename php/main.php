@@ -8,7 +8,7 @@ $client = new Pb\chatServiceClient('localhost:40040', [
 
 
 $stream = $client->subscribe(new \Google\Protobuf\GPBEmpty());
-$messages = $call->respones();
-foreach ($msg as $messages) {
+$messages = $stream->responses();
+foreach ($messages as $msg) {
     var_dump($msg);
 }
