@@ -15,7 +15,7 @@ import (
 	"github.com/riimi/tutorial-grpc-chat/pb"
 )
 
-//go:generate protoc -I ../pb chat.proto --go_out=plugins=grpc:../pb
+//go:generate protoc -I../pb -I/usr/local/include -I$GOPATH/src -I$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis --go_out=plugins=grpc:../pb --grpc-gateway_out=logtostderr=true:../pb --swagger_out=logtostderr=true:../pb chat-gateway.proto
 
 type ChatServer struct {
 	Ctx        context.Context

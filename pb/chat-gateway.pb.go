@@ -7,7 +7,7 @@ import (
 	context "context"
 	fmt "fmt"
 	proto "github.com/golang/protobuf/proto"
-	empty "github.com/golang/protobuf/ptypes/empty"
+	timestamp "github.com/golang/protobuf/ptypes/timestamp"
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	grpc "google.golang.org/grpc"
 	math "math"
@@ -24,19 +24,172 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.ProtoPackageIsVersion3 // please upgrade the proto package
 
-type Message struct {
-	Id                   string   `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	Text                 string   `protobuf:"bytes,2,opt,name=text,proto3" json:"text,omitempty"`
+type LoginRequest struct {
+	Name                 string   `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *LoginRequest) Reset()         { *m = LoginRequest{} }
+func (m *LoginRequest) String() string { return proto.CompactTextString(m) }
+func (*LoginRequest) ProtoMessage()    {}
+func (*LoginRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_4b278c71b6605e99, []int{0}
+}
+
+func (m *LoginRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_LoginRequest.Unmarshal(m, b)
+}
+func (m *LoginRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_LoginRequest.Marshal(b, m, deterministic)
+}
+func (m *LoginRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_LoginRequest.Merge(m, src)
+}
+func (m *LoginRequest) XXX_Size() int {
+	return xxx_messageInfo_LoginRequest.Size(m)
+}
+func (m *LoginRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_LoginRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_LoginRequest proto.InternalMessageInfo
+
+func (m *LoginRequest) GetName() string {
+	if m != nil {
+		return m.Name
+	}
+	return ""
+}
+
+type LoginResponse struct {
+	Token                string   `protobuf:"bytes,1,opt,name=token,proto3" json:"token,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *LoginResponse) Reset()         { *m = LoginResponse{} }
+func (m *LoginResponse) String() string { return proto.CompactTextString(m) }
+func (*LoginResponse) ProtoMessage()    {}
+func (*LoginResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_4b278c71b6605e99, []int{1}
+}
+
+func (m *LoginResponse) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_LoginResponse.Unmarshal(m, b)
+}
+func (m *LoginResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_LoginResponse.Marshal(b, m, deterministic)
+}
+func (m *LoginResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_LoginResponse.Merge(m, src)
+}
+func (m *LoginResponse) XXX_Size() int {
+	return xxx_messageInfo_LoginResponse.Size(m)
+}
+func (m *LoginResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_LoginResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_LoginResponse proto.InternalMessageInfo
+
+func (m *LoginResponse) GetToken() string {
+	if m != nil {
+		return m.Token
+	}
+	return ""
+}
+
+type LogoutRequest struct {
+	Token                string   `protobuf:"bytes,1,opt,name=token,proto3" json:"token,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *LogoutRequest) Reset()         { *m = LogoutRequest{} }
+func (m *LogoutRequest) String() string { return proto.CompactTextString(m) }
+func (*LogoutRequest) ProtoMessage()    {}
+func (*LogoutRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_4b278c71b6605e99, []int{2}
+}
+
+func (m *LogoutRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_LogoutRequest.Unmarshal(m, b)
+}
+func (m *LogoutRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_LogoutRequest.Marshal(b, m, deterministic)
+}
+func (m *LogoutRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_LogoutRequest.Merge(m, src)
+}
+func (m *LogoutRequest) XXX_Size() int {
+	return xxx_messageInfo_LogoutRequest.Size(m)
+}
+func (m *LogoutRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_LogoutRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_LogoutRequest proto.InternalMessageInfo
+
+func (m *LogoutRequest) GetToken() string {
+	if m != nil {
+		return m.Token
+	}
+	return ""
+}
+
+type LogoutResponse struct {
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *LogoutResponse) Reset()         { *m = LogoutResponse{} }
+func (m *LogoutResponse) String() string { return proto.CompactTextString(m) }
+func (*LogoutResponse) ProtoMessage()    {}
+func (*LogoutResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_4b278c71b6605e99, []int{3}
+}
+
+func (m *LogoutResponse) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_LogoutResponse.Unmarshal(m, b)
+}
+func (m *LogoutResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_LogoutResponse.Marshal(b, m, deterministic)
+}
+func (m *LogoutResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_LogoutResponse.Merge(m, src)
+}
+func (m *LogoutResponse) XXX_Size() int {
+	return xxx_messageInfo_LogoutResponse.Size(m)
+}
+func (m *LogoutResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_LogoutResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_LogoutResponse proto.InternalMessageInfo
+
+type Message struct {
+	Timestamp *timestamp.Timestamp `protobuf:"bytes,1,opt,name=timestamp,proto3" json:"timestamp,omitempty"`
+	// Types that are valid to be assigned to Event:
+	//	*Message_Login_
+	//	*Message_Logout_
+	//	*Message_Message_
+	//	*Message_Shutdown_
+	Event                isMessage_Event `protobuf_oneof:"event"`
+	XXX_NoUnkeyedLiteral struct{}        `json:"-"`
+	XXX_unrecognized     []byte          `json:"-"`
+	XXX_sizecache        int32           `json:"-"`
 }
 
 func (m *Message) Reset()         { *m = Message{} }
 func (m *Message) String() string { return proto.CompactTextString(m) }
 func (*Message) ProtoMessage()    {}
 func (*Message) Descriptor() ([]byte, []int) {
-	return fileDescriptor_4b278c71b6605e99, []int{0}
+	return fileDescriptor_4b278c71b6605e99, []int{4}
 }
 
 func (m *Message) XXX_Unmarshal(b []byte) error {
@@ -57,44 +210,286 @@ func (m *Message) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_Message proto.InternalMessageInfo
 
-func (m *Message) GetId() string {
+func (m *Message) GetTimestamp() *timestamp.Timestamp {
 	if m != nil {
-		return m.Id
+		return m.Timestamp
+	}
+	return nil
+}
+
+type isMessage_Event interface {
+	isMessage_Event()
+}
+
+type Message_Login_ struct {
+	Login *Message_Login `protobuf:"bytes,2,opt,name=login,proto3,oneof"`
+}
+
+type Message_Logout_ struct {
+	Logout *Message_Logout `protobuf:"bytes,3,opt,name=logout,proto3,oneof"`
+}
+
+type Message_Message_ struct {
+	Message *Message_Message `protobuf:"bytes,4,opt,name=message,proto3,oneof"`
+}
+
+type Message_Shutdown_ struct {
+	Shutdown *Message_Shutdown `protobuf:"bytes,5,opt,name=shutdown,proto3,oneof"`
+}
+
+func (*Message_Login_) isMessage_Event() {}
+
+func (*Message_Logout_) isMessage_Event() {}
+
+func (*Message_Message_) isMessage_Event() {}
+
+func (*Message_Shutdown_) isMessage_Event() {}
+
+func (m *Message) GetEvent() isMessage_Event {
+	if m != nil {
+		return m.Event
+	}
+	return nil
+}
+
+func (m *Message) GetLogin() *Message_Login {
+	if x, ok := m.GetEvent().(*Message_Login_); ok {
+		return x.Login
+	}
+	return nil
+}
+
+func (m *Message) GetLogout() *Message_Logout {
+	if x, ok := m.GetEvent().(*Message_Logout_); ok {
+		return x.Logout
+	}
+	return nil
+}
+
+func (m *Message) GetMessage() *Message_Message {
+	if x, ok := m.GetEvent().(*Message_Message_); ok {
+		return x.Message
+	}
+	return nil
+}
+
+func (m *Message) GetShutdown() *Message_Shutdown {
+	if x, ok := m.GetEvent().(*Message_Shutdown_); ok {
+		return x.Shutdown
+	}
+	return nil
+}
+
+// XXX_OneofWrappers is for the internal use of the proto package.
+func (*Message) XXX_OneofWrappers() []interface{} {
+	return []interface{}{
+		(*Message_Login_)(nil),
+		(*Message_Logout_)(nil),
+		(*Message_Message_)(nil),
+		(*Message_Shutdown_)(nil),
+	}
+}
+
+type Message_Login struct {
+	Name                 string   `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *Message_Login) Reset()         { *m = Message_Login{} }
+func (m *Message_Login) String() string { return proto.CompactTextString(m) }
+func (*Message_Login) ProtoMessage()    {}
+func (*Message_Login) Descriptor() ([]byte, []int) {
+	return fileDescriptor_4b278c71b6605e99, []int{4, 0}
+}
+
+func (m *Message_Login) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_Message_Login.Unmarshal(m, b)
+}
+func (m *Message_Login) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_Message_Login.Marshal(b, m, deterministic)
+}
+func (m *Message_Login) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Message_Login.Merge(m, src)
+}
+func (m *Message_Login) XXX_Size() int {
+	return xxx_messageInfo_Message_Login.Size(m)
+}
+func (m *Message_Login) XXX_DiscardUnknown() {
+	xxx_messageInfo_Message_Login.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_Message_Login proto.InternalMessageInfo
+
+func (m *Message_Login) GetName() string {
+	if m != nil {
+		return m.Name
 	}
 	return ""
 }
 
-func (m *Message) GetText() string {
+type Message_Logout struct {
+	Name                 string   `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *Message_Logout) Reset()         { *m = Message_Logout{} }
+func (m *Message_Logout) String() string { return proto.CompactTextString(m) }
+func (*Message_Logout) ProtoMessage()    {}
+func (*Message_Logout) Descriptor() ([]byte, []int) {
+	return fileDescriptor_4b278c71b6605e99, []int{4, 1}
+}
+
+func (m *Message_Logout) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_Message_Logout.Unmarshal(m, b)
+}
+func (m *Message_Logout) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_Message_Logout.Marshal(b, m, deterministic)
+}
+func (m *Message_Logout) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Message_Logout.Merge(m, src)
+}
+func (m *Message_Logout) XXX_Size() int {
+	return xxx_messageInfo_Message_Logout.Size(m)
+}
+func (m *Message_Logout) XXX_DiscardUnknown() {
+	xxx_messageInfo_Message_Logout.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_Message_Logout proto.InternalMessageInfo
+
+func (m *Message_Logout) GetName() string {
 	if m != nil {
-		return m.Text
+		return m.Name
 	}
 	return ""
 }
+
+type Message_Message struct {
+	Name                 string   `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	Message              string   `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *Message_Message) Reset()         { *m = Message_Message{} }
+func (m *Message_Message) String() string { return proto.CompactTextString(m) }
+func (*Message_Message) ProtoMessage()    {}
+func (*Message_Message) Descriptor() ([]byte, []int) {
+	return fileDescriptor_4b278c71b6605e99, []int{4, 2}
+}
+
+func (m *Message_Message) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_Message_Message.Unmarshal(m, b)
+}
+func (m *Message_Message) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_Message_Message.Marshal(b, m, deterministic)
+}
+func (m *Message_Message) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Message_Message.Merge(m, src)
+}
+func (m *Message_Message) XXX_Size() int {
+	return xxx_messageInfo_Message_Message.Size(m)
+}
+func (m *Message_Message) XXX_DiscardUnknown() {
+	xxx_messageInfo_Message_Message.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_Message_Message proto.InternalMessageInfo
+
+func (m *Message_Message) GetName() string {
+	if m != nil {
+		return m.Name
+	}
+	return ""
+}
+
+func (m *Message_Message) GetMessage() string {
+	if m != nil {
+		return m.Message
+	}
+	return ""
+}
+
+type Message_Shutdown struct {
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *Message_Shutdown) Reset()         { *m = Message_Shutdown{} }
+func (m *Message_Shutdown) String() string { return proto.CompactTextString(m) }
+func (*Message_Shutdown) ProtoMessage()    {}
+func (*Message_Shutdown) Descriptor() ([]byte, []int) {
+	return fileDescriptor_4b278c71b6605e99, []int{4, 3}
+}
+
+func (m *Message_Shutdown) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_Message_Shutdown.Unmarshal(m, b)
+}
+func (m *Message_Shutdown) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_Message_Shutdown.Marshal(b, m, deterministic)
+}
+func (m *Message_Shutdown) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Message_Shutdown.Merge(m, src)
+}
+func (m *Message_Shutdown) XXX_Size() int {
+	return xxx_messageInfo_Message_Shutdown.Size(m)
+}
+func (m *Message_Shutdown) XXX_DiscardUnknown() {
+	xxx_messageInfo_Message_Shutdown.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_Message_Shutdown proto.InternalMessageInfo
 
 func init() {
+	proto.RegisterType((*LoginRequest)(nil), "pb.LoginRequest")
+	proto.RegisterType((*LoginResponse)(nil), "pb.LoginResponse")
+	proto.RegisterType((*LogoutRequest)(nil), "pb.LogoutRequest")
+	proto.RegisterType((*LogoutResponse)(nil), "pb.LogoutResponse")
 	proto.RegisterType((*Message)(nil), "pb.Message")
+	proto.RegisterType((*Message_Login)(nil), "pb.Message.Login")
+	proto.RegisterType((*Message_Logout)(nil), "pb.Message.Logout")
+	proto.RegisterType((*Message_Message)(nil), "pb.Message.Message")
+	proto.RegisterType((*Message_Shutdown)(nil), "pb.Message.Shutdown")
 }
 
 func init() { proto.RegisterFile("chat-gateway.proto", fileDescriptor_4b278c71b6605e99) }
 
 var fileDescriptor_4b278c71b6605e99 = []byte{
-	// 242 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x74, 0xce, 0x3d, 0x4a, 0x04, 0x31,
-	0x14, 0xc0, 0x71, 0x12, 0x16, 0x65, 0xb3, 0x60, 0xf1, 0x04, 0x19, 0xc6, 0x0f, 0x24, 0x36, 0xb2,
-	0xb0, 0x89, 0x1f, 0xdd, 0xf6, 0x56, 0x62, 0xa3, 0x85, 0x75, 0x32, 0xf3, 0x1c, 0x03, 0x3a, 0x09,
-	0xc9, 0xdb, 0x51, 0x5b, 0xaf, 0xe0, 0x51, 0x3c, 0x8a, 0x57, 0xf0, 0x20, 0x92, 0xec, 0x2c, 0x88,
-	0x60, 0x97, 0xcf, 0xdf, 0xff, 0x09, 0x68, 0x1e, 0x0d, 0x2d, 0x3a, 0x43, 0xf8, 0x62, 0xde, 0x54,
-	0x88, 0x9e, 0x3c, 0xf0, 0x60, 0xeb, 0x83, 0xce, 0xfb, 0xee, 0x09, 0xb5, 0x09, 0x4e, 0x9b, 0xbe,
-	0xf7, 0x64, 0xc8, 0xf9, 0x3e, 0xad, 0x5f, 0xd4, 0xfb, 0xe3, 0x6d, 0xd9, 0xd9, 0xd5, 0x83, 0xc6,
-	0xe7, 0x40, 0xe3, 0x77, 0xb9, 0x10, 0xdb, 0x37, 0x98, 0x92, 0xe9, 0x10, 0x76, 0x04, 0x77, 0x6d,
-	0xc5, 0x8e, 0xd9, 0xe9, 0xf4, 0x96, 0xbb, 0x16, 0x40, 0x4c, 0x08, 0x5f, 0xa9, 0xe2, 0xe5, 0xa4,
-	0xac, 0x2f, 0x3e, 0x99, 0x98, 0xe5, 0x21, 0xee, 0x30, 0x0e, 0xae, 0x41, 0xb8, 0x16, 0x93, 0x84,
-	0x7d, 0x0b, 0x33, 0x15, 0xac, 0x1a, 0xa1, 0x7a, 0x4f, 0xad, 0x8b, 0x6a, 0x53, 0x54, 0x57, 0xb9,
-	0x28, 0x8f, 0xde, 0xbf, 0xbe, 0x3f, 0x78, 0x25, 0x77, 0xf5, 0x70, 0xae, 0xb3, 0x92, 0x30, 0x0e,
-	0x18, 0x75, 0x16, 0x96, 0x6c, 0x0e, 0xf7, 0x62, 0x9a, 0x56, 0x36, 0x35, 0xd1, 0x59, 0x84, 0x7f,
-	0x90, 0xfa, 0x77, 0x49, 0x9e, 0x14, 0xf1, 0x50, 0x56, 0x7f, 0xc5, 0x0d, 0xb3, 0x64, 0xf3, 0x33,
-	0x66, 0xb7, 0x8a, 0x71, 0xf9, 0x13, 0x00, 0x00, 0xff, 0xff, 0xd9, 0x4f, 0x79, 0xac, 0x40, 0x01,
-	0x00, 0x00,
+	// 444 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x6c, 0x92, 0xcf, 0x6e, 0xd3, 0x40,
+	0x10, 0xc6, 0xe3, 0xb4, 0x4e, 0x9a, 0x09, 0x94, 0x76, 0x1a, 0x09, 0xb3, 0x14, 0x81, 0x56, 0x42,
+	0x2a, 0x15, 0xd8, 0x10, 0x0e, 0xa0, 0x1e, 0xb9, 0x60, 0x09, 0xb8, 0xb8, 0xbc, 0xc0, 0x3a, 0x2c,
+	0xae, 0x45, 0xb2, 0x6b, 0xb2, 0xeb, 0x44, 0x5c, 0x39, 0x72, 0xe5, 0xd1, 0x78, 0x05, 0xae, 0xbc,
+	0x03, 0xf2, 0xfe, 0x49, 0x56, 0x95, 0x4f, 0xf6, 0xec, 0xfc, 0xbe, 0x4f, 0xdf, 0xce, 0x0e, 0xe0,
+	0xe2, 0x86, 0xe9, 0x17, 0x15, 0xd3, 0x7c, 0xcb, 0x7e, 0xa4, 0xcd, 0x5a, 0x6a, 0x89, 0xc3, 0xa6,
+	0x24, 0xe7, 0x95, 0x94, 0xd5, 0x92, 0x67, 0xac, 0xa9, 0x33, 0x26, 0x84, 0xd4, 0x4c, 0xd7, 0x52,
+	0x28, 0x4b, 0x90, 0xc7, 0xae, 0x6b, 0xaa, 0xb2, 0xfd, 0x9a, 0xe9, 0x7a, 0xc5, 0x95, 0x66, 0xab,
+	0xc6, 0x02, 0x94, 0xc2, 0x9d, 0x8f, 0xb2, 0xaa, 0x45, 0xc1, 0xbf, 0xb7, 0x5c, 0x69, 0x44, 0x38,
+	0x14, 0x6c, 0xc5, 0x93, 0xe8, 0x49, 0x74, 0x31, 0x29, 0xcc, 0x3f, 0x7d, 0x0a, 0x77, 0x1d, 0xa3,
+	0x1a, 0x29, 0x14, 0xc7, 0x19, 0xc4, 0x5a, 0x7e, 0xe3, 0xc2, 0x51, 0xb6, 0x70, 0x98, 0x6c, 0xb5,
+	0xf7, 0xea, 0xc7, 0x4e, 0xe0, 0xd8, 0x63, 0xd6, 0x8e, 0xfe, 0x3a, 0x80, 0xf1, 0x27, 0xae, 0x14,
+	0xab, 0x38, 0xbe, 0x85, 0xc9, 0x2e, 0xa2, 0xd1, 0x4d, 0xe7, 0x24, 0xb5, 0x97, 0x48, 0xfd, 0x25,
+	0xd2, 0xcf, 0x9e, 0x28, 0xf6, 0x30, 0x3e, 0x83, 0x78, 0xd9, 0xa5, 0x4c, 0x86, 0x46, 0x75, 0x9a,
+	0x36, 0x65, 0xea, 0x5c, 0x53, 0x13, 0x3f, 0x1f, 0x14, 0x96, 0xc0, 0xe7, 0x30, 0x5a, 0x9a, 0x08,
+	0xc9, 0x81, 0x61, 0xf1, 0x16, 0x2b, 0x5b, 0x9d, 0x0f, 0x0a, 0xc7, 0x60, 0x06, 0xe3, 0x95, 0xed,
+	0x25, 0x87, 0x06, 0x3f, 0x0b, 0x71, 0xf7, 0xcd, 0x07, 0x85, 0xa7, 0x70, 0x0e, 0x47, 0xea, 0xa6,
+	0xd5, 0x5f, 0xe4, 0x56, 0x24, 0xb1, 0x51, 0xcc, 0x42, 0xc5, 0xb5, 0xeb, 0xe5, 0x83, 0x62, 0xc7,
+	0x91, 0x87, 0x10, 0x9b, 0x90, 0x7d, 0x0f, 0x40, 0xce, 0x61, 0x64, 0x53, 0xf5, 0x76, 0xdf, 0xec,
+	0xa7, 0xd7, 0xd3, 0xc6, 0x64, 0x1f, 0x7f, 0x68, 0x8e, 0x7d, 0x49, 0x00, 0x8e, 0x7c, 0x96, 0x77,
+	0x63, 0x88, 0xf9, 0x86, 0x0b, 0x3d, 0xff, 0x17, 0xc1, 0xb4, 0x5b, 0xb5, 0x6b, 0xbe, 0xde, 0xd4,
+	0x0b, 0x8e, 0xef, 0xdd, 0x58, 0xf1, 0xa4, 0xbb, 0x43, 0xb8, 0x2b, 0xe4, 0x34, 0x38, 0x71, 0x4f,
+	0xf9, 0xe0, 0xe7, 0x9f, 0xbf, 0xbf, 0x87, 0x67, 0xf4, 0x38, 0xdb, 0xbc, 0xca, 0x3a, 0x9b, 0xcc,
+	0x88, 0xaf, 0xa2, 0x4b, 0xfc, 0xe0, 0x87, 0x8e, 0x5e, 0xb7, 0x5f, 0x15, 0x82, 0xe1, 0x91, 0xf3,
+	0x22, 0xc6, 0x6b, 0x46, 0xef, 0x85, 0x5e, 0xb2, 0xd5, 0x9d, 0x59, 0x0e, 0x13, 0xd5, 0x96, 0x6a,
+	0xb1, 0xae, 0x4b, 0x8e, 0xd3, 0x60, 0xba, 0x24, 0x2c, 0xe8, 0x23, 0x63, 0x71, 0x9f, 0xe2, 0xce,
+	0x62, 0xa7, 0xba, 0x8a, 0x2e, 0x2f, 0xa2, 0x97, 0x51, 0x39, 0x32, 0x5b, 0xf5, 0xfa, 0x7f, 0x00,
+	0x00, 0x00, 0xff, 0xff, 0x32, 0xb6, 0x5b, 0x3d, 0x60, 0x03, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -109,8 +504,9 @@ const _ = grpc.SupportPackageIsVersion4
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type ChatServiceClient interface {
-	Send(ctx context.Context, in *Message, opts ...grpc.CallOption) (*empty.Empty, error)
-	Subscribe(ctx context.Context, in *empty.Empty, opts ...grpc.CallOption) (ChatService_SubscribeClient, error)
+	Login(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*LoginResponse, error)
+	Logout(ctx context.Context, in *LogoutRequest, opts ...grpc.CallOption) (*LogoutResponse, error)
+	Subscribe(ctx context.Context, opts ...grpc.CallOption) (ChatService_SubscribeClient, error)
 }
 
 type chatServiceClient struct {
@@ -121,37 +517,45 @@ func NewChatServiceClient(cc *grpc.ClientConn) ChatServiceClient {
 	return &chatServiceClient{cc}
 }
 
-func (c *chatServiceClient) Send(ctx context.Context, in *Message, opts ...grpc.CallOption) (*empty.Empty, error) {
-	out := new(empty.Empty)
-	err := c.cc.Invoke(ctx, "/pb.chatService/send", in, out, opts...)
+func (c *chatServiceClient) Login(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*LoginResponse, error) {
+	out := new(LoginResponse)
+	err := c.cc.Invoke(ctx, "/pb.chatService/login", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *chatServiceClient) Subscribe(ctx context.Context, in *empty.Empty, opts ...grpc.CallOption) (ChatService_SubscribeClient, error) {
+func (c *chatServiceClient) Logout(ctx context.Context, in *LogoutRequest, opts ...grpc.CallOption) (*LogoutResponse, error) {
+	out := new(LogoutResponse)
+	err := c.cc.Invoke(ctx, "/pb.chatService/logout", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *chatServiceClient) Subscribe(ctx context.Context, opts ...grpc.CallOption) (ChatService_SubscribeClient, error) {
 	stream, err := c.cc.NewStream(ctx, &_ChatService_serviceDesc.Streams[0], "/pb.chatService/subscribe", opts...)
 	if err != nil {
 		return nil, err
 	}
 	x := &chatServiceSubscribeClient{stream}
-	if err := x.ClientStream.SendMsg(in); err != nil {
-		return nil, err
-	}
-	if err := x.ClientStream.CloseSend(); err != nil {
-		return nil, err
-	}
 	return x, nil
 }
 
 type ChatService_SubscribeClient interface {
+	Send(*Message) error
 	Recv() (*Message, error)
 	grpc.ClientStream
 }
 
 type chatServiceSubscribeClient struct {
 	grpc.ClientStream
+}
+
+func (x *chatServiceSubscribeClient) Send(m *Message) error {
+	return x.ClientStream.SendMsg(m)
 }
 
 func (x *chatServiceSubscribeClient) Recv() (*Message, error) {
@@ -164,42 +568,58 @@ func (x *chatServiceSubscribeClient) Recv() (*Message, error) {
 
 // ChatServiceServer is the server API for ChatService service.
 type ChatServiceServer interface {
-	Send(context.Context, *Message) (*empty.Empty, error)
-	Subscribe(*empty.Empty, ChatService_SubscribeServer) error
+	Login(context.Context, *LoginRequest) (*LoginResponse, error)
+	Logout(context.Context, *LogoutRequest) (*LogoutResponse, error)
+	Subscribe(ChatService_SubscribeServer) error
 }
 
 func RegisterChatServiceServer(s *grpc.Server, srv ChatServiceServer) {
 	s.RegisterService(&_ChatService_serviceDesc, srv)
 }
 
-func _ChatService_Send_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(Message)
+func _ChatService_Login_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(LoginRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(ChatServiceServer).Send(ctx, in)
+		return srv.(ChatServiceServer).Login(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/pb.chatService/Send",
+		FullMethod: "/pb.chatService/Login",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ChatServiceServer).Send(ctx, req.(*Message))
+		return srv.(ChatServiceServer).Login(ctx, req.(*LoginRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ChatService_Logout_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(LogoutRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ChatServiceServer).Logout(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/pb.chatService/Logout",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ChatServiceServer).Logout(ctx, req.(*LogoutRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 func _ChatService_Subscribe_Handler(srv interface{}, stream grpc.ServerStream) error {
-	m := new(empty.Empty)
-	if err := stream.RecvMsg(m); err != nil {
-		return err
-	}
-	return srv.(ChatServiceServer).Subscribe(m, &chatServiceSubscribeServer{stream})
+	return srv.(ChatServiceServer).Subscribe(&chatServiceSubscribeServer{stream})
 }
 
 type ChatService_SubscribeServer interface {
 	Send(*Message) error
+	Recv() (*Message, error)
 	grpc.ServerStream
 }
 
@@ -211,13 +631,25 @@ func (x *chatServiceSubscribeServer) Send(m *Message) error {
 	return x.ServerStream.SendMsg(m)
 }
 
+func (x *chatServiceSubscribeServer) Recv() (*Message, error) {
+	m := new(Message)
+	if err := x.ServerStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
 var _ChatService_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "pb.chatService",
 	HandlerType: (*ChatServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "send",
-			Handler:    _ChatService_Send_Handler,
+			MethodName: "login",
+			Handler:    _ChatService_Login_Handler,
+		},
+		{
+			MethodName: "logout",
+			Handler:    _ChatService_Logout_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{
@@ -225,6 +657,7 @@ var _ChatService_serviceDesc = grpc.ServiceDesc{
 			StreamName:    "subscribe",
 			Handler:       _ChatService_Subscribe_Handler,
 			ServerStreams: true,
+			ClientStreams: true,
 		},
 	},
 	Metadata: "chat-gateway.proto",

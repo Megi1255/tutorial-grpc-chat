@@ -15,14 +15,14 @@
     "application/json"
   ],
   "paths": {
-    "/v1/chatserver/send": {
+    "/v1/chat/login": {
       "post": {
-        "operationId": "send",
+        "operationId": "login",
         "responses": {
           "200": {
             "description": "A successful response.",
             "schema": {
-              "properties": {}
+              "$ref": "#/definitions/pbLoginResponse"
             }
           }
         },
@@ -32,7 +32,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/pbMessage"
+              "$ref": "#/definitions/pbLoginRequest"
             }
           }
         ],
@@ -41,7 +41,33 @@
         ]
       }
     },
-    "/v1/chatserver/subscribe": {
+    "/v1/chat/logout": {
+      "post": {
+        "operationId": "logout",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbLogoutResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbLogoutRequest"
+            }
+          }
+        ],
+        "tags": [
+          "chatService"
+        ]
+      }
+    },
+    "/v1/chat/subscribe": {
       "post": {
         "operationId": "subscribe",
         "responses": {
@@ -55,10 +81,11 @@
         "parameters": [
           {
             "name": "body",
+            "description": " (streaming inputs)",
             "in": "body",
             "required": true,
             "schema": {
-              "properties": {}
+              "$ref": "#/definitions/pbMessage"
             }
           }
         ],
@@ -69,13 +96,80 @@
     }
   },
   "definitions": {
+    "MessageLogin": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "MessageLogout": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "MessageShutdown": {
+      "type": "object"
+    },
+    "pbLoginRequest": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "pbLoginResponse": {
+      "type": "object",
+      "properties": {
+        "token": {
+          "type": "string"
+        }
+      }
+    },
+    "pbLogoutRequest": {
+      "type": "object",
+      "properties": {
+        "token": {
+          "type": "string"
+        }
+      }
+    },
+    "pbLogoutResponse": {
+      "type": "object"
+    },
     "pbMessage": {
       "type": "object",
       "properties": {
-        "id": {
+        "timestamp": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "login": {
+          "$ref": "#/definitions/MessageLogin"
+        },
+        "logout": {
+          "$ref": "#/definitions/MessageLogout"
+        },
+        "message": {
+          "$ref": "#/definitions/pbMessageMessage"
+        },
+        "shutdown": {
+          "$ref": "#/definitions/MessageShutdown"
+        }
+      }
+    },
+    "pbMessageMessage": {
+      "type": "object",
+      "properties": {
+        "name": {
           "type": "string"
         },
-        "text": {
+        "message": {
           "type": "string"
         }
       }
@@ -113,7 +207,8 @@
           "type": "array",
           "items": {
             "$ref": "#/definitions/protobufAny"
-          }
+          },
+          "collectionFormat": "multi"
         }
       }
     }
