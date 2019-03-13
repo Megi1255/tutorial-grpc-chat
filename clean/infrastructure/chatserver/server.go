@@ -1,15 +1,17 @@
-package main
+package chatserver
 
 import (
 	"context"
 	"errors"
 	"fmt"
 	"github.com/golang/protobuf/ptypes"
+	"github.com/riimi/tutorial-grpc-chat/clean/interface/rpc"
+	"github.com/riimi/tutorial-grpc-chat/clean/usecase"
 	"google.golang.org/grpc"
-	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/status"
 	"math/rand"
 	"net"
+	"os"
+	"os/signal"
 	"sync"
 
 	"github.com/riimi/tutorial-grpc-chat/pb"
@@ -52,7 +54,6 @@ func NewServer(addr string) *ChatServer {
 		Broadcast:  make(chan *pb.Message, 100),
 		Connect:    make(chan Identifier, 100),
 		Disconnect: make(chan Identifier, 100),
-		Ctx:        context.Background(),
 
 		ErrorHandler: func(*Session, error, string) {},
 		LogHandler:   func(*Session, string, ...interface{}) {},
@@ -67,11 +68,12 @@ func (s *ChatServer) Run(ctx context.Context) {
 	ctx, cancel := context.WithCancel(ctx)
 	defer cancel()
 
-	s.LogHandler(nil, fmt.Sprintf("[main] server is running: %s", s.Addr))
-
 	var opt []grpc.ServerOption
 	srv := grpc.NewServer(opt...)
-	pb.RegisterChatServiceServer(srv, s)
+	pb.RegisterChatServiceServer(srv, rpc.NewChatService(
+		usecase.UserUsecase{UserService: s},
+		usecase.ChatUsecase{ChatService: s},
+	))
 
 	lis, err := net.Listen("tcp", s.Addr)
 	if err != nil {
@@ -79,7 +81,14 @@ func (s *ChatServer) Run(ctx context.Context) {
 	}
 
 	go s.Hub(ctx)
-	srv.Serve(lis)
+	go func() {
+		s.LogHandler(nil, fmt.Sprintf("[main] server is running: %s", s.Addr))
+		srv.Serve(lis)
+	}()
+
+	quit := make(chan os.Signal)
+	signal.Notify(quit, os.Interrupt)
+	<-quit
 	cancel()
 
 	s.Broadcast <- &pb.Message{
@@ -133,67 +142,6 @@ func (s *ChatServer) generateRandomId(n int) string {
 		return string(b)
 	}
 }
-
-func (s *ChatServer) Login(ctx context.Context, req *pb.LoginRequest) (*pb.LoginResponse, error) {
-	c := Identifier{
-		input: req.Name,
-		ack:   make(chan Ack, 1),
-	}
-	s.Connect <- c
-	ret := <-c.ack
-	if ret.Err != nil {
-		st := status.New(codes.Internal, "failed to connect")
-		return nil, st.Err()
-	}
-	return &pb.LoginResponse{Token: ret.Output}, nil
-}
-
-func (s *ChatServer) Logout(ctx context.Context, req *pb.LogoutRequest) (*pb.LogoutResponse, error) {
-	c := Identifier{
-		input: req.Token,
-		ack:   make(chan Ack, 1),
-	}
-	s.Disconnect <- c
-	ret := <-c.ack
-	if ret.Err != nil {
-		st := status.New(codes.InvalidArgument, "invalid token")
-		return nil, st.Err()
-	}
-	return &pb.LogoutResponse{}, nil
-}
-
-func (s *ChatServer) Subscribe(server pb.ChatService_SubscribeServer) error {
-	return nil
-}
-
-/*
-func (s *ChatServer) Send(ctx context.Context, msg *pb.Message) (*empty.Empty, error) {
-	s.Broadcast <- msg
-	return &empty.Empty{}, nil
-}
-
-func (s *ChatServer) Subscribe(e *empty.Empty, stream pb.ChatService_SubscribeServer) error {
-	sess := &Session{
-		app:    s,
-		output: make(chan *pb.Message, 32),
-		sync:   make(chan interface{}),
-		open:   true,
-	}
-	s.Connect <- sess
-	defer func() {
-		s.Disconnect <- sess
-	}()
-	<-sess.sync
-	sess.stream = stream
-	s.Broadcast <- &pb.Message{
-		Id:   sess.Id,
-		Text: "New Gopher!!",
-	}
-
-
-	return sess.writePump()
-}
-*/
 
 func (s *ChatServer) SessionByID(id string) (*Session, error) {
 	s.m.RLock()

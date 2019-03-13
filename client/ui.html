@@ -18,7 +18,8 @@
 <div id="app">
     <b-container fluid>
         <b-form @submit="onSubmit">
-            <b-button onclick="subscribe()" v-if="connected === false">Connect</b-button>
+            <b-button onclick="connect()" v-if="connected === false">Connect</b-button>
+            <b-button onclick="disconnect()" v-else>Disconnect</b-button>
             <b-form-input v-model="text1" type="text" placeholder="Message"></b-form-input>
             <!---<div class="mt-2">Value: {{ text1 }}</div>--->
         </b-form>
