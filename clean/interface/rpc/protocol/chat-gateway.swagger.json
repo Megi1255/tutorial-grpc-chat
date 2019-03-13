@@ -22,7 +22,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/pbLoginResponse"
+              "$ref": "#/definitions/protocolLoginResponse"
             }
           }
         },
@@ -32,7 +32,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/pbLoginRequest"
+              "$ref": "#/definitions/protocolLoginRequest"
             }
           }
         ],
@@ -48,7 +48,7 @@
           "200": {
             "description": "A successful response.",
             "schema": {
-              "$ref": "#/definitions/pbLogoutResponse"
+              "$ref": "#/definitions/protocolLogoutResponse"
             }
           }
         },
@@ -58,7 +58,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/pbLogoutRequest"
+              "$ref": "#/definitions/protocolLogoutRequest"
             }
           }
         ],
@@ -74,7 +74,7 @@
           "200": {
             "description": "A successful response.(streaming responses)",
             "schema": {
-              "$ref": "#/x-stream-definitions/pbMessage"
+              "$ref": "#/x-stream-definitions/protocolMessage"
             }
           }
         },
@@ -85,7 +85,7 @@
             "in": "body",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/pbMessage"
+              "$ref": "#/definitions/protocolMessage"
             }
           }
         ],
@@ -115,7 +115,19 @@
     "MessageShutdown": {
       "type": "object"
     },
-    "pbLoginRequest": {
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "type_url": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string",
+          "format": "byte"
+        }
+      }
+    },
+    "protocolLoginRequest": {
       "type": "object",
       "properties": {
         "name": {
@@ -123,7 +135,7 @@
         }
       }
     },
-    "pbLoginResponse": {
+    "protocolLoginResponse": {
       "type": "object",
       "properties": {
         "token": {
@@ -131,7 +143,7 @@
         }
       }
     },
-    "pbLogoutRequest": {
+    "protocolLogoutRequest": {
       "type": "object",
       "properties": {
         "token": {
@@ -139,10 +151,10 @@
         }
       }
     },
-    "pbLogoutResponse": {
+    "protocolLogoutResponse": {
       "type": "object"
     },
-    "pbMessage": {
+    "protocolMessage": {
       "type": "object",
       "properties": {
         "timestamp": {
@@ -156,14 +168,14 @@
           "$ref": "#/definitions/MessageLogout"
         },
         "message": {
-          "$ref": "#/definitions/pbMessageMessage"
+          "$ref": "#/definitions/protocolMessageMessage"
         },
         "shutdown": {
           "$ref": "#/definitions/MessageShutdown"
         }
       }
     },
-    "pbMessageMessage": {
+    "protocolMessageMessage": {
       "type": "object",
       "properties": {
         "name": {
@@ -171,18 +183,6 @@
         },
         "message": {
           "type": "string"
-        }
-      }
-    },
-    "protobufAny": {
-      "type": "object",
-      "properties": {
-        "type_url": {
-          "type": "string"
-        },
-        "value": {
-          "type": "string",
-          "format": "byte"
         }
       }
     },
@@ -214,17 +214,17 @@
     }
   },
   "x-stream-definitions": {
-    "pbMessage": {
+    "protocolMessage": {
       "type": "object",
       "properties": {
         "result": {
-          "$ref": "#/definitions/pbMessage"
+          "$ref": "#/definitions/protocolMessage"
         },
         "error": {
           "$ref": "#/definitions/runtimeStreamError"
         }
       },
-      "title": "Stream result of pbMessage"
+      "title": "Stream result of protocolMessage"
     }
   }
 }

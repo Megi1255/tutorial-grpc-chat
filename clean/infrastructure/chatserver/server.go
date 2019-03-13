@@ -17,7 +17,7 @@ import (
 	"github.com/riimi/tutorial-grpc-chat/pb"
 )
 
-//go:generate protoc -I../pb -I/usr/local/include -I$GOPATH/src -I$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis --go_out=plugins=grpc:../pb --grpc-gateway_out=logtostderr=true:../pb --swagger_out=logtostderr=true:../pb chat-gateway.proto
+//go:generate protoc -I../../interface/rpc/protocol -I/usr/local/include -I$GOPATH/src -I$GOPATH/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis --go_out=plugins=grpc:../../interface/rpc/protocol --grpc-gateway_out=logtostderr=true:../../interface/rpc/protocol --swagger_out=logtostderr=true:../../interface/rpc/protocol chat-gateway.proto
 
 type ChatServer struct {
 	Addr       string

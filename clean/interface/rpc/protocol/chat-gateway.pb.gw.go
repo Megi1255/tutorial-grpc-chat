@@ -2,7 +2,7 @@
 // source: chat-gateway.proto
 
 /*
-Package pb is a reverse proxy.
+Package protocol is a reverse proxy.
 
 It translates gRPC into RESTful JSON APIs.
 */
