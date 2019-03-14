@@ -4,23 +4,25 @@ import (
 	"context"
 	"flag"
 	"fmt"
-	"github.com/riimi/tutorial-grpc-chat/pb"
+	"github.com/golang/protobuf/ptypes"
+	"github.com/riimi/tutorial-grpc-chat/clean/interface/rpc/protocol"
 	"github.com/zserge/lorca"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/metadata"
 	"io"
 	"io/ioutil"
 	"log"
-	"net"
 	"net/url"
 	"os"
 	"time"
 )
 
 type ChatClient struct {
-	addr string
-	rpc  pb.ChatServiceClient
-	ui   UI
-	conn net.Conn
+	addr   string
+	rpc    protocol.ChatServiceClient
+	stream protocol.ChatService_SubscribeClient
+	ui     UI
+	conn   *grpc.ClientConn
 
 	Connected bool
 	Id        string
@@ -42,21 +44,24 @@ func (c *ChatClient) Close() {
 	c.conn.Close()
 }
 
-func (c *ChatClient) Connect() error {
+func (c *ChatClient) connect() error {
 	var opts []grpc.DialOption
 	opts = append(opts, grpc.WithInsecure())
 	conn, err := grpc.Dial(c.addr, opts...)
 	if err != nil {
 		log.Fatalf("fail to dial: %v", err)
 	}
-	client := pb.NewChatServiceClient(conn)
+	client := protocol.NewChatServiceClient(conn)
 	c.rpc = client
+	c.conn = conn
 
 	return nil
 }
 
-func (c *ChatClient) Subscribe() {
-	ctx := context.Background()
+func (c *ChatClient) Subscribe(ctx context.Context) {
+	md := metadata.New(map[string]string{"myheader-token": c.Id})
+	ctx = metadata.NewOutgoingContext(ctx, md)
+
 	stream, err := c.rpc.Subscribe(ctx)
 	if err != nil {
 		log.Printf("[Hello] failed to connect: %v", err)
@@ -64,12 +69,30 @@ func (c *ChatClient) Subscribe() {
 		return
 	}
 
-	go c.readPump(stream)
+	c.stream = stream
+	go c.readPump()
 }
 
-func (c *ChatClient) readPump(stream pb.ChatService_SubscribeClient) {
+func (c *ChatClient) Send(text string) {
+	if err := c.stream.Send(&protocol.Message{
+		Timestamp: ptypes.TimestampNow(),
+		Event: &protocol.Message_Message_{
+			Message: &protocol.Message_Message{
+				Name:    "test",
+				Message: text,
+			},
+		},
+	}); err != nil {
+		log.Printf("[Hello] failed to send: %v", err)
+		c.ui.PushMessage(err.Error())
+	}
+
+	c.ui.Eval(`window.app.text1 = ''`)
+}
+
+func (c *ChatClient) readPump() {
 	for {
-		_, err := stream.Recv()
+		in, err := c.stream.Recv()
 		if err == io.EOF {
 			log.Printf("[readpump] recv got EOF: %v", err)
 			c.Close()
@@ -79,25 +102,38 @@ func (c *ChatClient) readPump(stream pb.ChatService_SubscribeClient) {
 			return
 		}
 
-		//c.PushMessage(fmt.Sprintf("id: %s, text: %s", in.Id, in.Text))
+		switch in.Event.(type) {
+		case *protocol.Message_Login_:
+			c.ui.PushMessage(fmt.Sprintf("[SYSTEM] New Gopher(%s)", in.GetLogin().Name))
+		case *protocol.Message_Logout_:
+			c.ui.PushMessage(fmt.Sprintf("[STSTEM] Bye Gopher(%s)", in.GetLogout().Name))
+		case *protocol.Message_Message_:
+			c.ui.PushMessage(fmt.Sprintf("[%s] %s", in.GetMessage().Name, in.GetMessage().Message))
+		case *protocol.Message_Shutdown_:
+			c.ui.PushMessage("[SYSTEM] Sever shutdown")
+		}
+
 	}
 }
 
 func (c *ChatClient) Login() {
-	if err := c.Connect(); err != nil {
+	if err := c.connect(); err != nil {
 		log.Printf("[chat] failed to connect: %v", err)
 		c.ui.PushMessage(fmt.Sprintf("[chat] failed to connect: %v", err))
 		return
 	}
 
 	ctx, _ := context.WithTimeout(context.Background(), time.Second*5)
-	res, err := c.rpc.Login(ctx, &pb.LoginRequest{
+	res, err := c.rpc.Login(ctx, &protocol.LoginRequest{
 		Name: "test",
 	})
 	if err != nil {
 		log.Printf("[chat] failed to send message: %v", err)
 		return
 	}
+	c.Id = res.Token
+
+	c.Subscribe(context.Background())
 
 	c.ui.PushMessage(fmt.Sprintf("[Login] token: %s", res.Token))
 	c.ui.Eval(`window.app.connected = true`)
@@ -105,7 +141,7 @@ func (c *ChatClient) Login() {
 
 func (c *ChatClient) Logout() {
 	ctx, _ := context.WithTimeout(context.Background(), time.Second*5)
-	_, err := c.rpc.Logout(ctx, &pb.LogoutRequest{
+	_, err := c.rpc.Logout(ctx, &protocol.LogoutRequest{
 		Token: c.Id,
 	})
 	if err != nil {
@@ -126,7 +162,7 @@ func (c *ChatClient) Run() {
 	if err := c.ui.Bind("disconnect", c.Logout); err != nil {
 		log.Fatal(err)
 	}
-	if err := c.ui.Bind("send", c.Subscribe); err != nil {
+	if err := c.ui.Bind("send", c.Send); err != nil {
 		log.Fatal(err)
 	}
 
