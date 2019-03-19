@@ -17,7 +17,7 @@
   "paths": {
     "/v1/chat/login": {
       "post": {
-        "operationId": "login2",
+        "operationId": "login",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -26,16 +26,6 @@
             }
           }
         },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/protocolLoginRequest"
-            }
-          }
-        ],
         "tags": [
           "chatService"
         ]
@@ -43,7 +33,7 @@
     },
     "/v1/chat/logout": {
       "post": {
-        "operationId": "logout2",
+        "operationId": "logout",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -52,16 +42,6 @@
             }
           }
         },
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/protocolLogoutRequest"
-            }
-          }
-        ],
         "tags": [
           "chatService"
         ]
@@ -69,7 +49,7 @@
     },
     "/v1/chat/subscribe": {
       "post": {
-        "operationId": "subscribe2",
+        "operationId": "subscribe",
         "responses": {
           "200": {
             "description": "A successful response.(streaming responses)",
@@ -78,17 +58,6 @@
             }
           }
         },
-        "parameters": [
-          {
-            "name": "body",
-            "description": " (streaming inputs)",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/protocolMessage"
-            }
-          }
-        ],
         "tags": [
           "chatService"
         ]
@@ -127,23 +96,7 @@
         }
       }
     },
-    "protocolLoginRequest": {
-      "type": "object",
-      "properties": {
-        "name": {
-          "type": "string"
-        }
-      }
-    },
     "protocolLoginResponse": {
-      "type": "object",
-      "properties": {
-        "token": {
-          "type": "string"
-        }
-      }
-    },
-    "protocolLogoutRequest": {
       "type": "object",
       "properties": {
         "token": {

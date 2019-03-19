@@ -2,29 +2,12 @@ syntax = "proto3";
 
 package protocol;
 
-import "google/api/annotations.proto";
-//import "google/protobuf/empty.proto";
 import "google/protobuf/timestamp.proto";
 
 service chatService {
-    rpc login(LoginRequest) returns (LoginResponse) {
-        option (google.api.http) = {
-            post: "/v1/chat/login"
-            body: "*"
-        };
-    }
-    rpc logout(LogoutRequest) returns (LogoutResponse) {
-        option (google.api.http) = {
-            post: "/v1/chat/logout"
-            body: "*"
-        };
-    }
-    rpc subscribe(stream Message) returns (stream Message) {
-        option (google.api.http) = {
-            post: "/v1/chat/subscribe"
-            body: "*"
-        };
-    }
+    rpc login(LoginRequest) returns (LoginResponse) {}
+    rpc logout(LogoutRequest) returns (LogoutResponse) {}
+    rpc subscribe(stream Message) returns (stream Message) {}
 }
 
 message LoginRequest {
