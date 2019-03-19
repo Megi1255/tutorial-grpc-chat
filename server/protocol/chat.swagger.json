@@ -1,7 +1,7 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "chat-gateway.proto",
+    "title": "chat.proto",
     "version": "version not set"
   },
   "schemes": [
@@ -17,7 +17,7 @@
   "paths": {
     "/v1/chat/login": {
       "post": {
-        "operationId": "login",
+        "operationId": "login2",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -43,7 +43,7 @@
     },
     "/v1/chat/logout": {
       "post": {
-        "operationId": "logout",
+        "operationId": "logout2",
         "responses": {
           "200": {
             "description": "A successful response.",
@@ -69,7 +69,7 @@
     },
     "/v1/chat/subscribe": {
       "post": {
-        "operationId": "subscribe",
+        "operationId": "subscribe2",
         "responses": {
           "200": {
             "description": "A successful response.(streaming responses)",
