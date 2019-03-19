@@ -1,0 +1,67 @@
+syntax = "proto3";
+
+package protocol;
+
+import "google/api/annotations.proto";
+//import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+
+service chatService {
+    rpc login(LoginRequest) returns (LoginResponse) {
+        option (google.api.http) = {
+            post: "/v1/chat/login"
+            body: "*"
+        };
+    }
+    rpc logout(LogoutRequest) returns (LogoutResponse) {
+        option (google.api.http) = {
+            post: "/v1/chat/logout"
+            body: "*"
+        };
+    }
+    rpc subscribe(stream Message) returns (stream Message) {
+        option (google.api.http) = {
+            post: "/v1/chat/subscribe"
+            body: "*"
+        };
+    }
+}
+
+message LoginRequest {
+    string name = 1;
+}
+
+message LoginResponse {
+    string token = 1;
+}
+
+message LogoutRequest {
+    string token = 1;
+}
+
+message LogoutResponse {}
+
+message Message {
+    google.protobuf.Timestamp timestamp = 1;
+    oneof event {
+        Login login = 2;
+        Logout logout = 3;
+        Message message = 4;
+        Shutdown shutdown = 5;
+    }
+
+    message Login {
+        string name = 1;
+    }
+
+    message Logout {
+        string name = 1;
+    }
+
+    message Message {
+        string name = 1;
+        string message = 2;
+    }
+
+    message Shutdown {}
+}

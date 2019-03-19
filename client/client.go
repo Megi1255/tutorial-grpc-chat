@@ -42,6 +42,7 @@ func NewGophersClient(w, h int, addr string) *ChatClient {
 
 func (c *ChatClient) Close() {
 	c.conn.Close()
+
 }
 
 func (c *ChatClient) connect() error {
@@ -91,11 +92,13 @@ func (c *ChatClient) Send(text string) {
 }
 
 func (c *ChatClient) readPump() {
+	defer c.stream.CloseSend()
+	defer c.Close()
+
 	for {
 		in, err := c.stream.Recv()
 		if err == io.EOF {
 			log.Printf("[readpump] recv got EOF: %v", err)
-			c.Close()
 			return
 		} else if err != nil {
 			log.Printf("[readpump] failed to recv: %v", err)
@@ -111,6 +114,7 @@ func (c *ChatClient) readPump() {
 			c.ui.PushMessage(fmt.Sprintf("[%s] %s", in.GetMessage().Name, in.GetMessage().Message))
 		case *protocol.Message_Shutdown_:
 			c.ui.PushMessage("[SYSTEM] Sever shutdown")
+			return
 		}
 
 	}

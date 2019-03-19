@@ -5,7 +5,7 @@ import (
 	"github.com/riimi/tutorial-grpc-chat/clean/domain"
 )
 
-type ChatService interface {
+type ChatServer interface {
 	Broadcast(msg *domain.Message) error
 	Recv(string) (<-chan *domain.Message, error)
 	GenerateRandomToken(int) string
@@ -16,32 +16,32 @@ type ChatService interface {
 }
 
 type ChatUsecase struct {
-	service ChatService
+	server ChatServer
 }
 
-func NewChatUsecase(chatService ChatService) *ChatUsecase {
+func NewChatUsecase(chatService ChatServer) *ChatUsecase {
 	return &ChatUsecase{
-		service: chatService,
+		server: chatService,
 	}
 }
 
 func (u *ChatUsecase) SendMessageAll(msg *domain.Message) error {
-	return u.service.Broadcast(msg)
+	return u.server.Broadcast(msg)
 }
 
 func (u *ChatUsecase) Subscribe(token string) (<-chan *domain.Message, error) {
-	if !u.service.DuplicateToken(token) {
-		return nil, errors.New("Invalid token")
+	if !u.server.DuplicateToken(token) {
+		return nil, errors.New("Unauthenticated")
 	}
 
-	return u.service.Recv(token)
+	return u.server.Recv(token)
 }
 
 func (u *ChatUsecase) Join(name string) (*domain.User, error) {
 	var token string
 	for {
-		token = u.service.GenerateRandomToken(16)
-		if !u.service.DuplicateToken(token) {
+		token = u.server.GenerateRandomToken(16)
+		if !u.server.DuplicateToken(token) {
 			break
 		}
 	}
@@ -50,7 +50,7 @@ func (u *ChatUsecase) Join(name string) (*domain.User, error) {
 		Token: token,
 	}
 
-	if err := u.service.RegisterUser(newUser); err != nil {
+	if err := u.server.RegisterUser(newUser); err != nil {
 		return newUser, err
 	}
 
@@ -58,12 +58,12 @@ func (u *ChatUsecase) Join(name string) (*domain.User, error) {
 }
 
 func (u *ChatUsecase) Quit(token string) (*domain.User, error) {
-	delUser, err := u.service.UserByToken(token)
+	delUser, err := u.server.UserByToken(token)
 	if err != nil {
 		return nil, err
 	}
 
-	if err := u.service.UnregisterUser(delUser); err != nil {
+	if err := u.server.UnregisterUser(delUser); err != nil {
 		return delUser, err
 	}
 

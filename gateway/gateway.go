@@ -5,7 +5,7 @@ import (
 	"flag"
 	"fmt"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
-	gw "github.com/riimi/tutorial-grpc-chat/pb"
+	gw "github.com/riimi/tutorial-grpc-chat/server/protocol"
 	"google.golang.org/grpc"
 	"log"
 	"net/http"
@@ -25,5 +25,5 @@ func main() {
 	if err := gw.RegisterChatServiceHandlerFromEndpoint(ctx, mux, *EndPoint, opts); err != nil {
 		log.Fatal(err)
 	}
-	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%s", *port), mux))
+	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", *port), mux))
 }

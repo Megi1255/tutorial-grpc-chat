@@ -1,0 +1,230 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "chat-gateway.proto",
+    "version": "version not set"
+  },
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/v1/chat/login": {
+      "post": {
+        "operationId": "login",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/protocolLoginResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/protocolLoginRequest"
+            }
+          }
+        ],
+        "tags": [
+          "chatService"
+        ]
+      }
+    },
+    "/v1/chat/logout": {
+      "post": {
+        "operationId": "logout",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/protocolLogoutResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/protocolLogoutRequest"
+            }
+          }
+        ],
+        "tags": [
+          "chatService"
+        ]
+      }
+    },
+    "/v1/chat/subscribe": {
+      "post": {
+        "operationId": "subscribe",
+        "responses": {
+          "200": {
+            "description": "A successful response.(streaming responses)",
+            "schema": {
+              "$ref": "#/x-stream-definitions/protocolMessage"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "description": " (streaming inputs)",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/protocolMessage"
+            }
+          }
+        ],
+        "tags": [
+          "chatService"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "MessageLogin": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "MessageLogout": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "MessageShutdown": {
+      "type": "object"
+    },
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "type_url": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string",
+          "format": "byte"
+        }
+      }
+    },
+    "protocolLoginRequest": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "protocolLoginResponse": {
+      "type": "object",
+      "properties": {
+        "token": {
+          "type": "string"
+        }
+      }
+    },
+    "protocolLogoutRequest": {
+      "type": "object",
+      "properties": {
+        "token": {
+          "type": "string"
+        }
+      }
+    },
+    "protocolLogoutResponse": {
+      "type": "object"
+    },
+    "protocolMessage": {
+      "type": "object",
+      "properties": {
+        "timestamp": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "login": {
+          "$ref": "#/definitions/MessageLogin"
+        },
+        "logout": {
+          "$ref": "#/definitions/MessageLogout"
+        },
+        "message": {
+          "$ref": "#/definitions/protocolMessageMessage"
+        },
+        "shutdown": {
+          "$ref": "#/definitions/MessageShutdown"
+        }
+      }
+    },
+    "protocolMessageMessage": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    },
+    "runtimeStreamError": {
+      "type": "object",
+      "properties": {
+        "grpc_code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "http_code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "http_status": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/protobufAny"
+          },
+          "collectionFormat": "multi"
+        }
+      }
+    }
+  },
+  "x-stream-definitions": {
+    "protocolMessage": {
+      "type": "object",
+      "properties": {
+        "result": {
+          "$ref": "#/definitions/protocolMessage"
+        },
+        "error": {
+          "$ref": "#/definitions/runtimeStreamError"
+        }
+      },
+      "title": "Stream result of protocolMessage"
+    }
+  }
+}

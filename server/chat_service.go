@@ -1,40 +1,70 @@
-package rpc
+package main
 
 import (
 	"context"
 	"github.com/golang/protobuf/ptypes"
-	"github.com/riimi/tutorial-grpc-chat/clean/domain"
-	"github.com/riimi/tutorial-grpc-chat/clean/interface/rpc/protocol"
-	"github.com/riimi/tutorial-grpc-chat/clean/usecase"
+	"github.com/riimi/tutorial-grpc-chat/server/domain"
+	"github.com/riimi/tutorial-grpc-chat/server/protocol"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
 	"io"
 )
 
-type ChatService struct {
-	Log         func(string, error)
-	chatUsecase *usecase.ChatUsecase
+type Subscription interface {
+	Updates() <-chan *domain.Message
+	Close()
 }
 
-func NewChatService(c *usecase.ChatUsecase, logHandler func(string, error)) *ChatService {
+type Server interface {
+	Broadcast(msg *domain.Message) error
+	Subscribe(string) (Subscription, error)
+	GenerateRandomToken(int) string
+	RegisterUser(*domain.User) error
+	UnregisterUser(*domain.User) error
+	DuplicateToken(string) bool
+	UserByToken(string) (*domain.User, error)
+	ErrorLog(*domain.User, error, string)
+}
+
+type ChatService struct {
+	server Server
+}
+
+func NewChatService(s Server) *ChatService {
 	return &ChatService{
-		Log:         logHandler,
-		chatUsecase: c,
+		server: s,
 	}
 }
 
 func (s *ChatService) Login(ctx context.Context, req *protocol.LoginRequest) (*protocol.LoginResponse, error) {
-	user, err := s.chatUsecase.Join(req.Name)
-	if err != nil {
+	var token string
+	for {
+		token = s.server.GenerateRandomToken(16)
+		if !s.server.DuplicateToken(token) {
+			break
+		}
+	}
+	newUser := &domain.User{
+		Name:  req.Name,
+		Token: token,
+	}
+
+	if err := s.server.RegisterUser(newUser); err != nil {
 		return nil, err
 	}
 
-	return &protocol.LoginResponse{Token: user.Token}, nil
+	return &protocol.LoginResponse{Token: newUser.Token}, nil
 }
 
 func (s *ChatService) Logout(ctx context.Context, req *protocol.LogoutRequest) (*protocol.LogoutResponse, error) {
-	if _, err := s.chatUsecase.Quit(req.Token); err != nil {
+	delUser, err := s.server.UserByToken(req.Token)
+	if err != nil {
+		st := status.New(codes.Unauthenticated, "invalid token")
+		return nil, st.Err()
+	}
+
+	if err := s.server.UnregisterUser(delUser); err != nil {
 		return nil, err
 	}
 
@@ -48,26 +78,38 @@ func (s *ChatService) Subscribe(server protocol.ChatService_SubscribeServer) err
 		return st.Err()
 	}
 
-	output, err := s.chatUsecase.Subscribe(token)
+	user, err := s.server.UserByToken(token)
 	if err != nil {
 		st := status.New(codes.Unauthenticated, "invalid token")
 		return st.Err()
 	}
-	go s.writePump(token, server, output)
 
-	for {
-		in, err := server.Recv()
-		if err == io.EOF {
-			return nil
-		} else if err != nil {
-			s.Log(token, err)
-			return err
-		}
-		if err := s.chatUsecase.SendMessageAll(protobufToMsg(in)); err != nil {
-			s.Log(token, err)
-			return err
-		}
+	sub, err := s.server.Subscribe(token)
+	if err != nil {
+		st := status.New(codes.Unauthenticated, "invalid token")
+		return st.Err()
 	}
+
+	go func() {
+		for {
+			in, err := server.Recv()
+			if err == io.EOF {
+				sub.Close()
+				return
+			} else if err != nil {
+				s.server.ErrorLog(user, err, token)
+				s.server.UnregisterUser(user)
+				return
+			}
+			if err := s.server.Broadcast(protobufToMsg(in)); err != nil {
+				s.server.ErrorLog(user, err, token)
+				return
+			}
+		}
+	}()
+
+	s.writePump(user, server, sub)
+	return nil
 }
 
 func (s *ChatService) extractToken(ctx context.Context) (string, bool) {
@@ -78,15 +120,19 @@ func (s *ChatService) extractToken(ctx context.Context) (string, bool) {
 	return md["myheader-token"][0], true
 }
 
-func (s *ChatService) writePump(token string, server protocol.ChatService_SubscribeServer, output <-chan *domain.Message) {
-	for msg := range output {
+func (s *ChatService) writePump(user *domain.User, server protocol.ChatService_SubscribeServer, sub Subscription) {
+	for msg := range sub.Updates() {
 		if err := server.Send(MsgToProtobuf(msg)); err != nil {
-			s.Log(token, err)
+			s.server.ErrorLog(user, err, "")
 		}
 	}
 }
 
 func MsgToProtobuf(msg *domain.Message) *protocol.Message {
+	if msg == nil {
+		return nil
+	}
+
 	ret := &protocol.Message{
 		Timestamp: ptypes.TimestampNow(),
 	}
@@ -119,6 +165,10 @@ func MsgToProtobuf(msg *domain.Message) *protocol.Message {
 }
 
 func protobufToMsg(msg *protocol.Message) *domain.Message {
+	if msg == nil {
+		return nil
+	}
+
 	switch msg.Event.(type) {
 	case *protocol.Message_Login_:
 		return &domain.Message{

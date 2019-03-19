@@ -1,17 +1,14 @@
-package rpc
+package main
 
 import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/riimi/tutorial-grpc-chat/clean/domain"
-	"github.com/riimi/tutorial-grpc-chat/clean/interface/rpc/protocol"
-	"github.com/riimi/tutorial-grpc-chat/clean/usecase"
+	"github.com/riimi/tutorial-grpc-chat/server/domain"
+	"github.com/riimi/tutorial-grpc-chat/server/protocol"
 	"google.golang.org/grpc"
 	"math/rand"
 	"net"
-	"os"
-	"os/signal"
 	"sync"
 )
 
@@ -23,8 +20,8 @@ type ChatServer struct {
 	m         sync.RWMutex
 	broadcast chan *domain.Message
 
-	ErrorHandler func(*Session, error, string)
-	LogHandler   func(*Session, string, ...interface{})
+	ErrorHandler func(*domain.User, error, string)
+	LogHandler   func(*domain.User, string, ...interface{})
 }
 
 var (
@@ -36,64 +33,70 @@ func NewServer(addr string) *ChatServer {
 	server := &ChatServer{
 		Addr:      addr,
 		Gophers:   make(map[string]*Session),
-		broadcast: make(chan *domain.Message, 100),
+		broadcast: make(chan *domain.Message, 8096),
 
-		ErrorHandler: func(*Session, error, string) {},
-		LogHandler:   func(*Session, string, ...interface{}) {},
+		ErrorHandler: func(*domain.User, error, string) {},
+		LogHandler:   func(*domain.User, string, ...interface{}) {},
 	}
 
 	return server
 }
 
-func (s *ChatServer) Run(ctx context.Context) {
+func (s *ChatServer) Run(ctx context.Context) error {
 	ctx, cancel := context.WithCancel(ctx)
 	defer cancel()
 
 	var opt []grpc.ServerOption
 	srv := grpc.NewServer(opt...)
-	protocol.RegisterChatServiceServer(srv, NewChatService(
-		s,
-		usecase.NewChatUsecase(s),
-	))
+	protocol.RegisterChatServiceServer(srv, NewChatService(s))
 
 	lis, err := net.Listen("tcp", s.Addr)
 	if err != nil {
 		s.ErrorHandler(nil, err, "[main] failed to listen")
+		return err
 	}
 
 	go s.Hub(ctx)
-	go func() {
-		s.LogHandler(nil, fmt.Sprintf("[main] server is running: %s", s.Addr))
-		srv.Serve(lis)
-	}()
+	//go func() {
+	s.LogHandler(nil, fmt.Sprintf("[main] server is running: %s", s.Addr))
+	srv.Serve(lis)
+	//}()
 
-	quit := make(chan os.Signal)
-	signal.Notify(quit, os.Interrupt)
-	<-quit
+	//quit := make(chan os.Signal)
+	//signal.Notify(quit, os.Interrupt)
+	//<-quit
 	cancel()
 
-	s.broadcast <- &domain.Message{
+	if err := s.Broadcast(&domain.Message{
 		Type: domain.MSGTYPE_SHUTDOWN,
 		Name: "SYSTEM",
 		Text: "server shutdown",
+	}); err != nil {
+		s.ErrorHandler(nil, err, "")
 	}
 
 	s.LogHandler(nil, "[main] server closed")
 	srv.GracefulStop()
-
 	close(s.broadcast)
+	return nil
 }
 
 func (s *ChatServer) Hub(ctx context.Context) {
 	for {
 		select {
 		case msg := <-s.broadcast:
+			s.m.RLock()
 			for _, sess := range s.Gophers {
-				if err := sess.writeMessage(msg); err != nil {
-					s.ErrorHandler(sess, err, "")
-				}
+				/*
+					if err := sess.writeMessage(msg); err != nil {
+						s.ErrorHandler(sess.user, err, "")
+					}
+				*/
+				sess.writeMessage(msg)
 			}
-			s.LogHandler(nil, fmt.Sprintf("[broadcast] %v", *msg))
+			s.m.RUnlock()
+			//s.LogHandler(nil, fmt.Sprintf("[broadcast] %v", *msg))
+
 		case <-ctx.Done():
 			return
 		}
@@ -121,18 +124,21 @@ func (s *ChatServer) RegisterUser(user *domain.User) error {
 		open:   true,
 		app:    s,
 		user:   user,
-		output: make(chan *domain.Message, 100),
+		output: make(chan *domain.Message, 1000),
 	}
 
 	s.m.Lock()
 	defer s.m.Unlock()
 	s.Gophers[user.Token] = sess
 
-	s.broadcast <- &domain.Message{
+	if err := s.Broadcast(&domain.Message{
 		Type: domain.MSGTYPE_LOGIN,
+		Name: sess.user.Name,
+	}); err != nil {
+		s.ErrorHandler(user, err, "")
 	}
 
-	s.LogHandler(sess, "New Gohper!")
+	s.LogHandler(sess.user, "New Gohper!")
 	return nil
 }
 
@@ -146,22 +152,28 @@ func (s *ChatServer) UnregisterUser(user *domain.User) error {
 	defer s.m.Unlock()
 	user = sess.user
 	delete(s.Gophers, sess.user.Token)
-	sess.close()
-	s.LogHandler(sess, "Bye Gopher..")
+	sess.Close()
+
+	if err := s.Broadcast(&domain.Message{
+		Type: domain.MSGTYPE_LOGOUT,
+		Name: sess.user.Name,
+	}); err != nil {
+		s.ErrorHandler(user, err, "")
+	}
+	s.LogHandler(sess.user, "Bye Gopher..")
 	return nil
 }
 
-func (s *ChatServer) Recv(token string) (<-chan *domain.Message, error) {
-	sess, err := s.SessionByID(token)
-	if err != nil {
-		return nil, err
-	}
-	sess.open = true
-	return sess.output, nil
+func (s *ChatServer) Subscribe(token string) (Subscription, error) {
+	return s.SessionByID(token)
 }
 
 func (s *ChatServer) Broadcast(msg *domain.Message) error {
-	s.broadcast <- msg
+	select {
+	case s.broadcast <- msg:
+	default:
+		return ErrWriteBufferFull
+	}
 	return nil
 }
 
@@ -181,4 +193,8 @@ func (s *ChatServer) SessionByID(id string) (*Session, error) {
 		return nil, ErrNotValidSession
 	}
 	return sess, nil
+}
+
+func (s *ChatServer) ErrorLog(u *domain.User, err error, str string) {
+	s.ErrorHandler(u, err, str)
 }
