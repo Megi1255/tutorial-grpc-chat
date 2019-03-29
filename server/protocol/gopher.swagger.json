@@ -16,7 +16,19 @@
   ],
   "paths": {},
   "definitions": {
-    "MovementGopherInfo": {
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "type_url": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string",
+          "format": "byte"
+        }
+      }
+    },
+    "protocolGopherInfo": {
       "type": "object",
       "properties": {
         "name": {
@@ -29,18 +41,6 @@
         "y": {
           "type": "integer",
           "format": "int32"
-        }
-      }
-    },
-    "protobufAny": {
-      "type": "object",
-      "properties": {
-        "type_url": {
-          "type": "string"
-        },
-        "value": {
-          "type": "string",
-          "format": "byte"
         }
       }
     },
@@ -81,7 +81,7 @@
           "$ref": "#/definitions/protocolLogout"
         },
         "info": {
-          "$ref": "#/definitions/MovementGopherInfo"
+          "$ref": "#/definitions/protocolGopherInfo"
         }
       }
     },

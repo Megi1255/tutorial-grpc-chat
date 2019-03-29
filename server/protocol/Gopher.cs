@@ -24,32 +24,217 @@ namespace Protocol {
     static GopherReflection() {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
-            "Cgxnb3BoZXIucHJvdG8SCHByb3RvY29sIg4KDExvZ2luUmVxdWVzdCIrCgVM",
-            "b2dpbhIMCgRuYW1lGAEgASgJEgkKAXgYAiABKAUSCQoBeRgDIAEoBSIWCgZM",
-            "b2dvdXQSDAoEbmFtZRgBIAEoCSIQCg5Mb2dvdXRSZXNwb25zZSK6AQoITW92",
-            "ZW1lbnQSIAoFbG9naW4YASABKAsyDy5wcm90b2NvbC5Mb2dpbkgAEiIKBmxv",
-            "Z291dBgCIAEoCzIQLnByb3RvY29sLkxvZ291dEgAEi0KBGluZm8YAyABKAsy",
-            "HS5wcm90b2NvbC5Nb3ZlbWVudC5Hb3BoZXJJbmZvSAAaMAoKR29waGVySW5m",
-            "bxIMCgRuYW1lGAEgASgJEgkKAXgYAiABKAUSCQoBeRgDIAEoBUIHCgVldmVu",
-            "dDKxAQoNR29waGVyU2VydmljZRIyCgVsb2dpbhIWLnByb3RvY29sLkxvZ2lu",
-            "UmVxdWVzdBoPLnByb3RvY29sLkxvZ2luIgASNgoGbG9nb3V0EhAucHJvdG9j",
-            "b2wuTG9nb3V0GhgucHJvdG9jb2wuTG9nb3V0UmVzcG9uc2UiABI0CgRtb3Zl",
-            "EhIucHJvdG9jb2wuTW92ZW1lbnQaEi5wcm90b2NvbC5Nb3ZlbWVudCIAKAEw",
-            "AWIGcHJvdG8z"));
+            "Cgxnb3BoZXIucHJvdG8SCHByb3RvY29sIjAKCkdvcGhlckluZm8SDAoEbmFt",
+            "ZRgBIAEoCRIJCgF4GAIgASgFEgkKAXkYAyABKAUiDgoMTG9naW5SZXF1ZXN0",
+            "IisKBUxvZ2luEgwKBG5hbWUYASABKAkSCQoBeBgCIAEoBRIJCgF5GAMgASgF",
+            "IhYKBkxvZ291dBIMCgRuYW1lGAEgASgJIhAKDkxvZ291dFJlc3BvbnNlIn8K",
+            "CE1vdmVtZW50EiAKBWxvZ2luGAEgASgLMg8ucHJvdG9jb2wuTG9naW5IABIi",
+            "CgZsb2dvdXQYAiABKAsyEC5wcm90b2NvbC5Mb2dvdXRIABIkCgRpbmZvGAMg",
+            "ASgLMhQucHJvdG9jb2wuR29waGVySW5mb0gAQgcKBWV2ZW50MrEBCg1Hb3Bo",
+            "ZXJTZXJ2aWNlEjIKBWxvZ2luEhYucHJvdG9jb2wuTG9naW5SZXF1ZXN0Gg8u",
+            "cHJvdG9jb2wuTG9naW4iABI2CgZsb2dvdXQSEC5wcm90b2NvbC5Mb2dvdXQa",
+            "GC5wcm90b2NvbC5Mb2dvdXRSZXNwb25zZSIAEjQKBG1vdmUSEi5wcm90b2Nv",
+            "bC5Nb3ZlbWVudBoSLnByb3RvY29sLk1vdmVtZW50IgAoATABYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
+            new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.GopherInfo), global::Protocol.GopherInfo.Parser, new[]{ "Name", "X", "Y" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.LoginRequest), global::Protocol.LoginRequest.Parser, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.Login), global::Protocol.Login.Parser, new[]{ "Name", "X", "Y" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.Logout), global::Protocol.Logout.Parser, new[]{ "Name" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.LogoutResponse), global::Protocol.LogoutResponse.Parser, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.Movement), global::Protocol.Movement.Parser, new[]{ "Login", "Logout", "Info" }, new[]{ "Event" }, null, new pbr::GeneratedClrTypeInfo[] { new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.Movement.Types.GopherInfo), global::Protocol.Movement.Types.GopherInfo.Parser, new[]{ "Name", "X", "Y" }, null, null, null)})
+            new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.Movement), global::Protocol.Movement.Parser, new[]{ "Login", "Logout", "Info" }, new[]{ "Event" }, null, null)
           }));
     }
     #endregion
 
   }
   #region Messages
+  public sealed partial class GopherInfo : pb::IMessage<GopherInfo> {
+    private static readonly pb::MessageParser<GopherInfo> _parser = new pb::MessageParser<GopherInfo>(() => new GopherInfo());
+    private pb::UnknownFieldSet _unknownFields;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pb::MessageParser<GopherInfo> Parser { get { return _parser; } }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public static pbr::MessageDescriptor Descriptor {
+      get { return global::Protocol.GopherReflection.Descriptor.MessageTypes[0]; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    pbr::MessageDescriptor pb::IMessage.Descriptor {
+      get { return Descriptor; }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public GopherInfo() {
+      OnConstruction();
+    }
+
+    partial void OnConstruction();
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public GopherInfo(GopherInfo other) : this() {
+      name_ = other.name_;
+      x_ = other.x_;
+      y_ = other.y_;
+      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public GopherInfo Clone() {
+      return new GopherInfo(this);
+    }
+
+    /// <summary>Field number for the "name" field.</summary>
+    public const int NameFieldNumber = 1;
+    private string name_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public string Name {
+      get { return name_; }
+      set {
+        name_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+      }
+    }
+
+    /// <summary>Field number for the "x" field.</summary>
+    public const int XFieldNumber = 2;
+    private int x_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int X {
+      get { return x_; }
+      set {
+        x_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "y" field.</summary>
+    public const int YFieldNumber = 3;
+    private int y_;
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int Y {
+      get { return y_; }
+      set {
+        y_ = value;
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override bool Equals(object other) {
+      return Equals(other as GopherInfo);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public bool Equals(GopherInfo other) {
+      if (ReferenceEquals(other, null)) {
+        return false;
+      }
+      if (ReferenceEquals(other, this)) {
+        return true;
+      }
+      if (Name != other.Name) return false;
+      if (X != other.X) return false;
+      if (Y != other.Y) return false;
+      return Equals(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override int GetHashCode() {
+      int hash = 1;
+      if (Name.Length != 0) hash ^= Name.GetHashCode();
+      if (X != 0) hash ^= X.GetHashCode();
+      if (Y != 0) hash ^= Y.GetHashCode();
+      if (_unknownFields != null) {
+        hash ^= _unknownFields.GetHashCode();
+      }
+      return hash;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public override string ToString() {
+      return pb::JsonFormatter.ToDiagnosticString(this);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void WriteTo(pb::CodedOutputStream output) {
+      if (Name.Length != 0) {
+        output.WriteRawTag(10);
+        output.WriteString(Name);
+      }
+      if (X != 0) {
+        output.WriteRawTag(16);
+        output.WriteInt32(X);
+      }
+      if (Y != 0) {
+        output.WriteRawTag(24);
+        output.WriteInt32(Y);
+      }
+      if (_unknownFields != null) {
+        _unknownFields.WriteTo(output);
+      }
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public int CalculateSize() {
+      int size = 0;
+      if (Name.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(Name);
+      }
+      if (X != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(X);
+      }
+      if (Y != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(Y);
+      }
+      if (_unknownFields != null) {
+        size += _unknownFields.CalculateSize();
+      }
+      return size;
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(GopherInfo other) {
+      if (other == null) {
+        return;
+      }
+      if (other.Name.Length != 0) {
+        Name = other.Name;
+      }
+      if (other.X != 0) {
+        X = other.X;
+      }
+      if (other.Y != 0) {
+        Y = other.Y;
+      }
+      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
+    }
+
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    public void MergeFrom(pb::CodedInputStream input) {
+      uint tag;
+      while ((tag = input.ReadTag()) != 0) {
+        switch(tag) {
+          default:
+            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
+            break;
+          case 10: {
+            Name = input.ReadString();
+            break;
+          }
+          case 16: {
+            X = input.ReadInt32();
+            break;
+          }
+          case 24: {
+            Y = input.ReadInt32();
+            break;
+          }
+        }
+      }
+    }
+
+  }
+
   public sealed partial class LoginRequest : pb::IMessage<LoginRequest> {
     private static readonly pb::MessageParser<LoginRequest> _parser = new pb::MessageParser<LoginRequest>(() => new LoginRequest());
     private pb::UnknownFieldSet _unknownFields;
@@ -58,7 +243,7 @@ namespace Protocol {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Protocol.GopherReflection.Descriptor.MessageTypes[0]; }
+      get { return global::Protocol.GopherReflection.Descriptor.MessageTypes[1]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -159,7 +344,7 @@ namespace Protocol {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Protocol.GopherReflection.Descriptor.MessageTypes[1]; }
+      get { return global::Protocol.GopherReflection.Descriptor.MessageTypes[2]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -344,7 +529,7 @@ namespace Protocol {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Protocol.GopherReflection.Descriptor.MessageTypes[2]; }
+      get { return global::Protocol.GopherReflection.Descriptor.MessageTypes[3]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -473,7 +658,7 @@ namespace Protocol {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Protocol.GopherReflection.Descriptor.MessageTypes[3]; }
+      get { return global::Protocol.GopherReflection.Descriptor.MessageTypes[4]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -574,7 +759,7 @@ namespace Protocol {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Protocol.GopherReflection.Descriptor.MessageTypes[4]; }
+      get { return global::Protocol.GopherReflection.Descriptor.MessageTypes[5]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -636,8 +821,8 @@ namespace Protocol {
     /// <summary>Field number for the "info" field.</summary>
     public const int InfoFieldNumber = 3;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public global::Protocol.Movement.Types.GopherInfo Info {
-      get { return eventCase_ == EventOneofCase.Info ? (global::Protocol.Movement.Types.GopherInfo) event_ : null; }
+    public global::Protocol.GopherInfo Info {
+      get { return eventCase_ == EventOneofCase.Info ? (global::Protocol.GopherInfo) event_ : null; }
       set {
         event_ = value;
         eventCase_ = value == null ? EventOneofCase.None : EventOneofCase.Info;
@@ -759,7 +944,7 @@ namespace Protocol {
           break;
         case EventOneofCase.Info:
           if (Info == null) {
-            Info = new global::Protocol.Movement.Types.GopherInfo();
+            Info = new global::Protocol.GopherInfo();
           }
           Info.MergeFrom(other.Info);
           break;
@@ -795,7 +980,7 @@ namespace Protocol {
             break;
           }
           case 26: {
-            global::Protocol.Movement.Types.GopherInfo subBuilder = new global::Protocol.Movement.Types.GopherInfo();
+            global::Protocol.GopherInfo subBuilder = new global::Protocol.GopherInfo();
             if (eventCase_ == EventOneofCase.Info) {
               subBuilder.MergeFrom(Info);
             }
@@ -806,198 +991,6 @@ namespace Protocol {
         }
       }
     }
-
-    #region Nested types
-    /// <summary>Container for nested types declared in the Movement message type.</summary>
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public static partial class Types {
-      public sealed partial class GopherInfo : pb::IMessage<GopherInfo> {
-        private static readonly pb::MessageParser<GopherInfo> _parser = new pb::MessageParser<GopherInfo>(() => new GopherInfo());
-        private pb::UnknownFieldSet _unknownFields;
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        public static pb::MessageParser<GopherInfo> Parser { get { return _parser; } }
-
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        public static pbr::MessageDescriptor Descriptor {
-          get { return global::Protocol.Movement.Descriptor.NestedTypes[0]; }
-        }
-
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        pbr::MessageDescriptor pb::IMessage.Descriptor {
-          get { return Descriptor; }
-        }
-
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        public GopherInfo() {
-          OnConstruction();
-        }
-
-        partial void OnConstruction();
-
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        public GopherInfo(GopherInfo other) : this() {
-          name_ = other.name_;
-          x_ = other.x_;
-          y_ = other.y_;
-          _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
-        }
-
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        public GopherInfo Clone() {
-          return new GopherInfo(this);
-        }
-
-        /// <summary>Field number for the "name" field.</summary>
-        public const int NameFieldNumber = 1;
-        private string name_ = "";
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        public string Name {
-          get { return name_; }
-          set {
-            name_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
-          }
-        }
-
-        /// <summary>Field number for the "x" field.</summary>
-        public const int XFieldNumber = 2;
-        private int x_;
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        public int X {
-          get { return x_; }
-          set {
-            x_ = value;
-          }
-        }
-
-        /// <summary>Field number for the "y" field.</summary>
-        public const int YFieldNumber = 3;
-        private int y_;
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        public int Y {
-          get { return y_; }
-          set {
-            y_ = value;
-          }
-        }
-
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        public override bool Equals(object other) {
-          return Equals(other as GopherInfo);
-        }
-
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        public bool Equals(GopherInfo other) {
-          if (ReferenceEquals(other, null)) {
-            return false;
-          }
-          if (ReferenceEquals(other, this)) {
-            return true;
-          }
-          if (Name != other.Name) return false;
-          if (X != other.X) return false;
-          if (Y != other.Y) return false;
-          return Equals(_unknownFields, other._unknownFields);
-        }
-
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        public override int GetHashCode() {
-          int hash = 1;
-          if (Name.Length != 0) hash ^= Name.GetHashCode();
-          if (X != 0) hash ^= X.GetHashCode();
-          if (Y != 0) hash ^= Y.GetHashCode();
-          if (_unknownFields != null) {
-            hash ^= _unknownFields.GetHashCode();
-          }
-          return hash;
-        }
-
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        public override string ToString() {
-          return pb::JsonFormatter.ToDiagnosticString(this);
-        }
-
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        public void WriteTo(pb::CodedOutputStream output) {
-          if (Name.Length != 0) {
-            output.WriteRawTag(10);
-            output.WriteString(Name);
-          }
-          if (X != 0) {
-            output.WriteRawTag(16);
-            output.WriteInt32(X);
-          }
-          if (Y != 0) {
-            output.WriteRawTag(24);
-            output.WriteInt32(Y);
-          }
-          if (_unknownFields != null) {
-            _unknownFields.WriteTo(output);
-          }
-        }
-
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        public int CalculateSize() {
-          int size = 0;
-          if (Name.Length != 0) {
-            size += 1 + pb::CodedOutputStream.ComputeStringSize(Name);
-          }
-          if (X != 0) {
-            size += 1 + pb::CodedOutputStream.ComputeInt32Size(X);
-          }
-          if (Y != 0) {
-            size += 1 + pb::CodedOutputStream.ComputeInt32Size(Y);
-          }
-          if (_unknownFields != null) {
-            size += _unknownFields.CalculateSize();
-          }
-          return size;
-        }
-
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        public void MergeFrom(GopherInfo other) {
-          if (other == null) {
-            return;
-          }
-          if (other.Name.Length != 0) {
-            Name = other.Name;
-          }
-          if (other.X != 0) {
-            X = other.X;
-          }
-          if (other.Y != 0) {
-            Y = other.Y;
-          }
-          _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
-        }
-
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-        public void MergeFrom(pb::CodedInputStream input) {
-          uint tag;
-          while ((tag = input.ReadTag()) != 0) {
-            switch(tag) {
-              default:
-                _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
-                break;
-              case 10: {
-                Name = input.ReadString();
-                break;
-              }
-              case 16: {
-                X = input.ReadInt32();
-                break;
-              }
-              case 24: {
-                Y = input.ReadInt32();
-                break;
-              }
-            }
-          }
-        }
-
-      }
-
-    }
-    #endregion
 
   }
 
