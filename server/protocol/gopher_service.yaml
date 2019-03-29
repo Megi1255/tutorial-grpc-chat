@@ -1,0 +1,11 @@
+type: google.api.Service
+config_version: 3
+
+http:
+  rules:
+  - selector: protocol.GohperService.login
+    post: /v1/gopher/login
+  - selector: protocol.GohperService.logout
+    post: /v1/gopher/logout
+  - selector: protocol.GohperService.subscribe
+    post: /v1/gopher/subscribe
