@@ -1,0 +1,37 @@
+syntax = "proto3";
+
+package protocol;
+
+service GopherService {
+    rpc login(LoginRequest) returns (Login) {}
+    rpc logout(Logout) returns (LogoutResponse) {}
+    rpc move(stream Movement) returns (stream Movement) {}
+}
+
+message GopherInfo {
+    string name = 1;
+    int32 x = 2;
+    int32 y= 3;
+}
+
+message LoginRequest {}
+
+message Login {
+    string name = 1;
+    int32 x = 2;
+    int32 y = 3;
+}
+
+message Logout {
+    string name = 1;
+}
+
+message LogoutResponse {}
+
+message Movement {
+    oneof event {
+        Login login = 1;
+        Logout logout = 2;
+        GopherInfo info = 3;
+    }
+}

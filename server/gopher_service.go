@@ -9,22 +9,23 @@ import (
 	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
 	"io"
+	"math/rand"
 )
 
 type Subscription interface {
-	Updates() <-chan *domain.Message
+	Updates() <-chan *domain.GopherInfo
 	Close()
 }
 
 type Server interface {
-	Broadcast(msg *domain.Message) error
+	Broadcast(msg *domain.GopherInfo) error
 	Subscribe(string) (Subscription, error)
 	GenerateRandomToken(int) string
-	RegisterUser(*domain.User) error
-	UnregisterUser(*domain.User) error
+	RegisterUser(*domain.GopherInfo) error
+	UnregisterUser(*domain.GopherInfo) error
 	DuplicateToken(string) bool
-	UserByToken(string) (*domain.User, error)
-	ErrorLog(*domain.User, error, string)
+	UserByToken(string) (*domain.GopherInfo, error)
+	ErrorLog(*domain.GopherInfo, error, string)
 }
 
 type ChatService struct {
@@ -38,27 +39,28 @@ func NewChatService(s Server) *ChatService {
 }
 
 func (s *ChatService) Login(ctx context.Context, req *protocol.LoginRequest) (*protocol.LoginResponse, error) {
-	var token string
+	var name string
 	for {
-		token = s.server.GenerateRandomToken(16)
-		if !s.server.DuplicateToken(token) {
+		name = s.server.GenerateRandomToken(16)
+		if !s.server.DuplicateToken(name) {
 			break
 		}
 	}
-	newUser := &domain.User{
-		Name:  req.Name,
-		Token: token,
+	newUser := &domain.GopherInfo{
+		Name: name,
+		X:    rand.Int() % 500,
+		Y:    rand.Int() % 500,
 	}
 
 	if err := s.server.RegisterUser(newUser); err != nil {
 		return nil, err
 	}
 
-	return &protocol.LoginResponse{Token: newUser.Token}, nil
+	return &protocol.LoginResponse{Name: newUser.Name}, nil
 }
 
 func (s *ChatService) Logout(ctx context.Context, req *protocol.LogoutRequest) (*protocol.LogoutResponse, error) {
-	delUser, err := s.server.UserByToken(req.Token)
+	delUser, err := s.server.UserByToken(req.Name)
 	if err != nil {
 		st := status.New(codes.Unauthenticated, "invalid token")
 		return nil, st.Err()
@@ -71,7 +73,7 @@ func (s *ChatService) Logout(ctx context.Context, req *protocol.LogoutRequest) (
 	return &protocol.LogoutResponse{}, nil
 }
 
-func (s *ChatService) Subscribe(server protocol.ChatService_SubscribeServer) error {
+func (s *ChatService) Move(server protocol.GopherService_MoveServer) error {
 	token, ok := s.extractToken(server.Context())
 	if !ok {
 		st := status.New(codes.InvalidArgument, "missing token")
@@ -120,78 +122,10 @@ func (s *ChatService) extractToken(ctx context.Context) (string, bool) {
 	return md["myheader-token"][0], true
 }
 
-func (s *ChatService) writePump(user *domain.User, server protocol.ChatService_SubscribeServer, sub Subscription) {
+func (s *ChatService) writePump(user *domain.GopherInfo, server protocol.GopherService_MoveServer, sub Subscription) {
 	for msg := range sub.Updates() {
 		if err := server.Send(MsgToProtobuf(msg)); err != nil {
 			s.server.ErrorLog(user, err, "")
 		}
-	}
-}
-
-func MsgToProtobuf(msg *domain.Message) *protocol.Message {
-	if msg == nil {
-		return nil
-	}
-
-	ret := &protocol.Message{
-		Timestamp: ptypes.TimestampNow(),
-	}
-	switch msg.Type {
-	case domain.MSGTYPE_LOGIN:
-		ret.Event = &protocol.Message_Login_{
-			Login: &protocol.Message_Login{
-				Name: msg.Name,
-			},
-		}
-	case domain.MSGTYPE_LOGOUT:
-		ret.Event = &protocol.Message_Logout_{
-			Logout: &protocol.Message_Logout{
-				Name: msg.Name,
-			},
-		}
-	case domain.MSGTYPE_MESSAGE:
-		ret.Event = &protocol.Message_Message_{
-			Message: &protocol.Message_Message{
-				Name:    msg.Name,
-				Message: msg.Text,
-			},
-		}
-	case domain.MSGTYPE_SHUTDOWN:
-		ret.Event = &protocol.Message_Shutdown_{
-			Shutdown: &protocol.Message_Shutdown{},
-		}
-	}
-	return ret
-}
-
-func protobufToMsg(msg *protocol.Message) *domain.Message {
-	if msg == nil {
-		return nil
-	}
-
-	switch msg.Event.(type) {
-	case *protocol.Message_Login_:
-		return &domain.Message{
-			Type: domain.MSGTYPE_LOGIN,
-			Name: msg.GetLogin().Name,
-		}
-	case *protocol.Message_Logout_:
-		return &domain.Message{
-			Type: domain.MSGTYPE_LOGOUT,
-			Name: msg.GetLogout().Name,
-		}
-	case *protocol.Message_Message_:
-		return &domain.Message{
-			Type: domain.MSGTYPE_MESSAGE,
-			Name: msg.GetMessage().Name,
-			Text: msg.GetMessage().Message,
-		}
-	case *protocol.Message_Shutdown_:
-		return &domain.Message{
-			Type: domain.MSGTYPE_SHUTDOWN,
-		}
-	}
-	return &domain.Message{
-		Type: domain.MSGTYPE_UNKNOWN,
 	}
 }

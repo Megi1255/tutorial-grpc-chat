@@ -4,7 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/riimi/tutorial-grpc-chat/server/domain"
+	"github.com/riimi/tutorial-grpc-chat/clean/domain"
 	"github.com/riimi/tutorial-grpc-chat/server/protocol"
 	"google.golang.org/grpc"
 	"math/rand"
@@ -20,7 +20,7 @@ type ChatServer struct {
 	Addr      string
 	Gophers   map[string]*Session
 	m         sync.RWMutex
-	broadcast chan *domain.Message
+	broadcast chan *protocol.Movement
 
 	ErrorHandler func(*domain.User, error, string)
 	LogHandler   func(*domain.User, string, ...interface{})
@@ -36,7 +36,7 @@ func NewServer(addr string) *ChatServer {
 	server := &ChatServer{
 		Addr:      addr,
 		Gophers:   make(map[string]*Session),
-		broadcast: make(chan *domain.Message, 1024*16),
+		broadcast: make(chan *protocol.Movement, 1024*16),
 
 		ErrorHandler: func(*domain.User, error, string) {},
 		LogHandler:   func(*domain.User, string, ...interface{}) {},
@@ -51,7 +51,7 @@ func (s *ChatServer) Run(ctx context.Context) error {
 
 	var opt []grpc.ServerOption
 	srv := grpc.NewServer(opt...)
-	protocol.RegisterChatServiceServer(srv, NewChatService(s))
+	protocol.RegisterGopherServiceServer(srv, NewChatService(s))
 
 	lis, err := net.Listen("tcp", s.Addr)
 	if err != nil {
@@ -127,7 +127,7 @@ func (s *ChatServer) RegisterUser(user *domain.User) error {
 		open:   true,
 		app:    s,
 		user:   user,
-		output: make(chan *domain.Message, 1024*8),
+		output: make(chan *protocol.Movement, 1024*8),
 	}
 
 	s.m.Lock()
