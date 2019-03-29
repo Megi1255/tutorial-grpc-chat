@@ -10,10 +10,7 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/metadata"
 	"io"
-	"log"
 	"os"
-	"runtime"
-	"sync"
 	"time"
 )
 
@@ -151,49 +148,23 @@ func (c *Client) writePump(stream protocol.ChatService_SubscribeClient) {
 func main() {
 	serverAddr := flag.String("addr", "localhost:40040", "grpc server address")
 	name := flag.String("name", "riimi", "name")
-	try := flag.Int("try", 200, "the number of tries")
 	//conn := flag.Int("conn", 50, "max connection")
 	flag.Parse()
 
-	gophers := make([]*Client, *try)
-	maxConn := make(chan struct{}, *try)
-	wg := sync.WaitGroup{}
-	wg.Add(*try)
-	for i := 0; i < *try; i++ {
-		go func(t int) {
-			defer wg.Done()
-			gophers[t] = NewClient(*serverAddr, *name)
-			maxConn <- struct{}{}
-			logger := log.New(os.Stdout, "", 0)
-			gophers[t].LogHandler = func(s string, a ...interface{}) {
-				logger.Printf(s, a...)
-			}
-			gophers[t].Run(context.Background())
-		}(i)
-	}
-	for i := 0; i < *try; i++ {
-		<-maxConn
-	}
-	fp, err := os.Open("input.txt")
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer fp.Close()
-	sc := bufio.NewScanner(fp)
+	done := make(chan struct{})
+	gophers := NewClient(*serverAddr, *name)
+	go func() {
+		gophers.Run(context.Background())
+		done <- struct{}{}
+	}()
+	sc := bufio.NewScanner(os.Stdin)
 	for sc.Scan() {
 		text := sc.Text()
-		//if text == "!q" {
-		//time.Sleep(5*time.Second)
-
-		//}
-		for i := 0; i < *try; i += 1 {
-			if text == "!q" {
-				runtime.Gosched()
-				close(gophers[i].send)
-			} else {
-				gophers[i].send <- text
-			}
+		if text == "!q" {
+			close(gophers.send)
+			break
 		}
+		gophers.send <- text
 	}
-	wg.Wait()
+	<-done
 }

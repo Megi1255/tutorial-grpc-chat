@@ -15,9 +15,9 @@ type Session struct {
 }
 
 var (
-	ErrAlreadyClosed   = errors.New("[session] closed session")
-	ErrWriteBufferFull = errors.New("[session] write buffer is full")
-	ErrMessageNil      = errors.New("[session] message should be not nil")
+	ErrAlreadyClosed   = errors.New("closed session")
+	ErrWriteBufferFull = errors.New("write buffer is full")
+	ErrMessageNil      = errors.New("message should be not nil")
 )
 
 func (s *Session) closed() bool {
@@ -27,14 +27,19 @@ func (s *Session) closed() bool {
 }
 
 func (s *Session) writeMessage(msg *domain.Message) error {
+	defer func() {
+		if r := recover(); r != nil {
+			s.app.LogHandler(s.user, "%v", r)
+		}
+	}()
 	if msg == nil {
 		return ErrMessageNil
 	}
 	if s.closed() {
 		return ErrAlreadyClosed
 	}
-	s.Lock()
-	defer s.Unlock()
+	s.RLock()
+	defer s.RUnlock()
 
 	select {
 	case s.output <- msg:

@@ -9,6 +9,8 @@ import (
 	"google.golang.org/grpc"
 	"math/rand"
 	"net"
+	"os"
+	"os/signal"
 	"sync"
 )
 
@@ -25,15 +27,16 @@ type ChatServer struct {
 }
 
 var (
-	ErrNotValidSession = errors.New("not valid session")
-	ErrInvalidToken    = errors.New("invalid token")
+	ErrNotValidSession     = errors.New("not valid session")
+	ErrInvalidToken        = errors.New("invalid token")
+	ErrBroadcastBufferFull = errors.New("broadcast buffer full")
 )
 
 func NewServer(addr string) *ChatServer {
 	server := &ChatServer{
 		Addr:      addr,
 		Gophers:   make(map[string]*Session),
-		broadcast: make(chan *domain.Message, 8096),
+		broadcast: make(chan *domain.Message, 1024*16),
 
 		ErrorHandler: func(*domain.User, error, string) {},
 		LogHandler:   func(*domain.User, string, ...interface{}) {},
@@ -57,14 +60,14 @@ func (s *ChatServer) Run(ctx context.Context) error {
 	}
 
 	go s.Hub(ctx)
-	//go func() {
-	s.LogHandler(nil, fmt.Sprintf("[main] server is running: %s", s.Addr))
-	srv.Serve(lis)
-	//}()
+	go func() {
+		s.LogHandler(nil, fmt.Sprintf("[main] server is running: %s", s.Addr))
+		srv.Serve(lis)
+	}()
 
-	//quit := make(chan os.Signal)
-	//signal.Notify(quit, os.Interrupt)
-	//<-quit
+	quit := make(chan os.Signal)
+	signal.Notify(quit, os.Interrupt)
+	<-quit
 	cancel()
 
 	if err := s.Broadcast(&domain.Message{
@@ -124,7 +127,7 @@ func (s *ChatServer) RegisterUser(user *domain.User) error {
 		open:   true,
 		app:    s,
 		user:   user,
-		output: make(chan *domain.Message, 1000),
+		output: make(chan *domain.Message, 1024*8),
 	}
 
 	s.m.Lock()
@@ -172,7 +175,7 @@ func (s *ChatServer) Broadcast(msg *domain.Message) error {
 	select {
 	case s.broadcast <- msg:
 	default:
-		return ErrWriteBufferFull
+		return ErrBroadcastBufferFull
 	}
 	return nil
 }
