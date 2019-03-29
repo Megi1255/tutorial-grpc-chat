@@ -5,7 +5,7 @@ package protocol;
 service GopherService {
     rpc login(LoginRequest) returns (LoginResponse) {}
     rpc logout(LogoutRequest) returns (LogoutResponse) {}
-    rpc Move(stream Message) returns (stream Message) {}
+    rpc move(stream Message) returns (stream Message) {}
 }
 
 message LoginRequest {}
