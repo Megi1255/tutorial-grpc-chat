@@ -16,30 +16,19 @@
   ],
   "paths": {},
   "definitions": {
-    "MessageLogin": {
-      "type": "object",
-      "properties": {
-        "name": {
-          "type": "string"
-        }
-      }
-    },
-    "MessageLogout": {
-      "type": "object",
-      "properties": {
-        "name": {
-          "type": "string"
-        }
-      }
-    },
-    "MessageMovement": {
+    "MovementGopherInfo": {
       "type": "object",
       "properties": {
         "name": {
           "type": "string"
         },
-        "message": {
-          "type": "string"
+        "x": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "y": {
+          "type": "integer",
+          "format": "int32"
         }
       }
     },
@@ -55,7 +44,23 @@
         }
       }
     },
-    "protocolLoginResponse": {
+    "protocolLogin": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "x": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "y": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "protocolLogout": {
       "type": "object",
       "properties": {
         "name": {
@@ -66,17 +71,17 @@
     "protocolLogoutResponse": {
       "type": "object"
     },
-    "protocolMessage": {
+    "protocolMovement": {
       "type": "object",
       "properties": {
         "login": {
-          "$ref": "#/definitions/MessageLogin"
+          "$ref": "#/definitions/protocolLogin"
         },
         "logout": {
-          "$ref": "#/definitions/MessageLogout"
+          "$ref": "#/definitions/protocolLogout"
         },
-        "movement": {
-          "$ref": "#/definitions/MessageMovement"
+        "info": {
+          "$ref": "#/definitions/MovementGopherInfo"
         }
       }
     },
@@ -107,17 +112,17 @@
     }
   },
   "x-stream-definitions": {
-    "protocolMessage": {
+    "protocolMovement": {
       "type": "object",
       "properties": {
         "result": {
-          "$ref": "#/definitions/protocolMessage"
+          "$ref": "#/definitions/protocolMovement"
         },
         "error": {
           "$ref": "#/definitions/runtimeStreamError"
         }
       },
-      "title": "Stream result of protocolMessage"
+      "title": "Stream result of protocolMovement"
     }
   }
 }
