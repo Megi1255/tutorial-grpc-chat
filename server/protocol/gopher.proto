@@ -3,8 +3,8 @@ syntax = "proto3";
 package protocol;
 
 service GopherService {
-    rpc login(LoginRequest) returns (Login) {}
-    rpc logout(Logout) returns (LogoutResponse) {}
+    rpc login(Login) returns (GopherInfo) {}
+    rpc logout(Logout) returns (GopherInfo) {}
     rpc move(stream Movement) returns (stream Movement) {}
 }
 
@@ -13,8 +13,6 @@ message GopherInfo {
     int32 x = 2;
     int32 y= 3;
 }
-
-message LoginRequest {}
 
 message Login {
     string name = 1;
@@ -25,8 +23,6 @@ message Login {
 message Logout {
     string name = 1;
 }
-
-message LogoutResponse {}
 
 message Movement {
     oneof event {

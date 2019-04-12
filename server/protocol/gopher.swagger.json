@@ -68,9 +68,6 @@
         }
       }
     },
-    "protocolLogoutResponse": {
-      "type": "object"
-    },
     "protocolMovement": {
       "type": "object",
       "properties": {

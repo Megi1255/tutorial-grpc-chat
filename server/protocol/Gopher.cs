@@ -25,24 +25,22 @@ namespace Protocol {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
             "Cgxnb3BoZXIucHJvdG8SCHByb3RvY29sIjAKCkdvcGhlckluZm8SDAoEbmFt",
-            "ZRgBIAEoCRIJCgF4GAIgASgFEgkKAXkYAyABKAUiDgoMTG9naW5SZXF1ZXN0",
-            "IisKBUxvZ2luEgwKBG5hbWUYASABKAkSCQoBeBgCIAEoBRIJCgF5GAMgASgF",
-            "IhYKBkxvZ291dBIMCgRuYW1lGAEgASgJIhAKDkxvZ291dFJlc3BvbnNlIn8K",
-            "CE1vdmVtZW50EiAKBWxvZ2luGAEgASgLMg8ucHJvdG9jb2wuTG9naW5IABIi",
-            "CgZsb2dvdXQYAiABKAsyEC5wcm90b2NvbC5Mb2dvdXRIABIkCgRpbmZvGAMg",
-            "ASgLMhQucHJvdG9jb2wuR29waGVySW5mb0gAQgcKBWV2ZW50MrEBCg1Hb3Bo",
-            "ZXJTZXJ2aWNlEjIKBWxvZ2luEhYucHJvdG9jb2wuTG9naW5SZXF1ZXN0Gg8u",
-            "cHJvdG9jb2wuTG9naW4iABI2CgZsb2dvdXQSEC5wcm90b2NvbC5Mb2dvdXQa",
-            "GC5wcm90b2NvbC5Mb2dvdXRSZXNwb25zZSIAEjQKBG1vdmUSEi5wcm90b2Nv",
-            "bC5Nb3ZlbWVudBoSLnByb3RvY29sLk1vdmVtZW50IgAoATABYgZwcm90bzM="));
+            "ZRgBIAEoCRIJCgF4GAIgASgFEgkKAXkYAyABKAUiKwoFTG9naW4SDAoEbmFt",
+            "ZRgBIAEoCRIJCgF4GAIgASgFEgkKAXkYAyABKAUiFgoGTG9nb3V0EgwKBG5h",
+            "bWUYASABKAkifwoITW92ZW1lbnQSIAoFbG9naW4YASABKAsyDy5wcm90b2Nv",
+            "bC5Mb2dpbkgAEiIKBmxvZ291dBgCIAEoCzIQLnByb3RvY29sLkxvZ291dEgA",
+            "EiQKBGluZm8YAyABKAsyFC5wcm90b2NvbC5Hb3BoZXJJbmZvSABCBwoFZXZl",
+            "bnQyqwEKDUdvcGhlclNlcnZpY2USMAoFbG9naW4SDy5wcm90b2NvbC5Mb2dp",
+            "bhoULnByb3RvY29sLkdvcGhlckluZm8iABIyCgZsb2dvdXQSEC5wcm90b2Nv",
+            "bC5Mb2dvdXQaFC5wcm90b2NvbC5Hb3BoZXJJbmZvIgASNAoEbW92ZRISLnBy",
+            "b3RvY29sLk1vdmVtZW50GhIucHJvdG9jb2wuTW92ZW1lbnQiACgBMAFiBnBy",
+            "b3RvMw=="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, new pbr::GeneratedClrTypeInfo[] {
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.GopherInfo), global::Protocol.GopherInfo.Parser, new[]{ "Name", "X", "Y" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.LoginRequest), global::Protocol.LoginRequest.Parser, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.Login), global::Protocol.Login.Parser, new[]{ "Name", "X", "Y" }, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.Logout), global::Protocol.Logout.Parser, new[]{ "Name" }, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.LogoutResponse), global::Protocol.LogoutResponse.Parser, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::Protocol.Movement), global::Protocol.Movement.Parser, new[]{ "Login", "Logout", "Info" }, new[]{ "Event" }, null, null)
           }));
     }
@@ -235,107 +233,6 @@ namespace Protocol {
 
   }
 
-  public sealed partial class LoginRequest : pb::IMessage<LoginRequest> {
-    private static readonly pb::MessageParser<LoginRequest> _parser = new pb::MessageParser<LoginRequest>(() => new LoginRequest());
-    private pb::UnknownFieldSet _unknownFields;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public static pb::MessageParser<LoginRequest> Parser { get { return _parser; } }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public static pbr::MessageDescriptor Descriptor {
-      get { return global::Protocol.GopherReflection.Descriptor.MessageTypes[1]; }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    pbr::MessageDescriptor pb::IMessage.Descriptor {
-      get { return Descriptor; }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public LoginRequest() {
-      OnConstruction();
-    }
-
-    partial void OnConstruction();
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public LoginRequest(LoginRequest other) : this() {
-      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public LoginRequest Clone() {
-      return new LoginRequest(this);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public override bool Equals(object other) {
-      return Equals(other as LoginRequest);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public bool Equals(LoginRequest other) {
-      if (ReferenceEquals(other, null)) {
-        return false;
-      }
-      if (ReferenceEquals(other, this)) {
-        return true;
-      }
-      return Equals(_unknownFields, other._unknownFields);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public override int GetHashCode() {
-      int hash = 1;
-      if (_unknownFields != null) {
-        hash ^= _unknownFields.GetHashCode();
-      }
-      return hash;
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public override string ToString() {
-      return pb::JsonFormatter.ToDiagnosticString(this);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void WriteTo(pb::CodedOutputStream output) {
-      if (_unknownFields != null) {
-        _unknownFields.WriteTo(output);
-      }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public int CalculateSize() {
-      int size = 0;
-      if (_unknownFields != null) {
-        size += _unknownFields.CalculateSize();
-      }
-      return size;
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void MergeFrom(LoginRequest other) {
-      if (other == null) {
-        return;
-      }
-      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void MergeFrom(pb::CodedInputStream input) {
-      uint tag;
-      while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
-          default:
-            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
-            break;
-        }
-      }
-    }
-
-  }
-
   public sealed partial class Login : pb::IMessage<Login> {
     private static readonly pb::MessageParser<Login> _parser = new pb::MessageParser<Login>(() => new Login());
     private pb::UnknownFieldSet _unknownFields;
@@ -344,7 +241,7 @@ namespace Protocol {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Protocol.GopherReflection.Descriptor.MessageTypes[2]; }
+      get { return global::Protocol.GopherReflection.Descriptor.MessageTypes[1]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -529,7 +426,7 @@ namespace Protocol {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Protocol.GopherReflection.Descriptor.MessageTypes[3]; }
+      get { return global::Protocol.GopherReflection.Descriptor.MessageTypes[2]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
@@ -650,107 +547,6 @@ namespace Protocol {
 
   }
 
-  public sealed partial class LogoutResponse : pb::IMessage<LogoutResponse> {
-    private static readonly pb::MessageParser<LogoutResponse> _parser = new pb::MessageParser<LogoutResponse>(() => new LogoutResponse());
-    private pb::UnknownFieldSet _unknownFields;
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public static pb::MessageParser<LogoutResponse> Parser { get { return _parser; } }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public static pbr::MessageDescriptor Descriptor {
-      get { return global::Protocol.GopherReflection.Descriptor.MessageTypes[4]; }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    pbr::MessageDescriptor pb::IMessage.Descriptor {
-      get { return Descriptor; }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public LogoutResponse() {
-      OnConstruction();
-    }
-
-    partial void OnConstruction();
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public LogoutResponse(LogoutResponse other) : this() {
-      _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public LogoutResponse Clone() {
-      return new LogoutResponse(this);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public override bool Equals(object other) {
-      return Equals(other as LogoutResponse);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public bool Equals(LogoutResponse other) {
-      if (ReferenceEquals(other, null)) {
-        return false;
-      }
-      if (ReferenceEquals(other, this)) {
-        return true;
-      }
-      return Equals(_unknownFields, other._unknownFields);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public override int GetHashCode() {
-      int hash = 1;
-      if (_unknownFields != null) {
-        hash ^= _unknownFields.GetHashCode();
-      }
-      return hash;
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public override string ToString() {
-      return pb::JsonFormatter.ToDiagnosticString(this);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void WriteTo(pb::CodedOutputStream output) {
-      if (_unknownFields != null) {
-        _unknownFields.WriteTo(output);
-      }
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public int CalculateSize() {
-      int size = 0;
-      if (_unknownFields != null) {
-        size += _unknownFields.CalculateSize();
-      }
-      return size;
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void MergeFrom(LogoutResponse other) {
-      if (other == null) {
-        return;
-      }
-      _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
-    }
-
-    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
-    public void MergeFrom(pb::CodedInputStream input) {
-      uint tag;
-      while ((tag = input.ReadTag()) != 0) {
-        switch(tag) {
-          default:
-            _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
-            break;
-        }
-      }
-    }
-
-  }
-
   public sealed partial class Movement : pb::IMessage<Movement> {
     private static readonly pb::MessageParser<Movement> _parser = new pb::MessageParser<Movement>(() => new Movement());
     private pb::UnknownFieldSet _unknownFields;
@@ -759,7 +555,7 @@ namespace Protocol {
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     public static pbr::MessageDescriptor Descriptor {
-      get { return global::Protocol.GopherReflection.Descriptor.MessageTypes[5]; }
+      get { return global::Protocol.GopherReflection.Descriptor.MessageTypes[3]; }
     }
 
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]

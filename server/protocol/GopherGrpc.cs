@@ -12,25 +12,24 @@ namespace Protocol {
   {
     static readonly string __ServiceName = "protocol.GopherService";
 
-    static readonly grpc::Marshaller<global::Protocol.LoginRequest> __Marshaller_protocol_LoginRequest = grpc::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::Protocol.LoginRequest.Parser.ParseFrom);
     static readonly grpc::Marshaller<global::Protocol.Login> __Marshaller_protocol_Login = grpc::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::Protocol.Login.Parser.ParseFrom);
+    static readonly grpc::Marshaller<global::Protocol.GopherInfo> __Marshaller_protocol_GopherInfo = grpc::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::Protocol.GopherInfo.Parser.ParseFrom);
     static readonly grpc::Marshaller<global::Protocol.Logout> __Marshaller_protocol_Logout = grpc::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::Protocol.Logout.Parser.ParseFrom);
-    static readonly grpc::Marshaller<global::Protocol.LogoutResponse> __Marshaller_protocol_LogoutResponse = grpc::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::Protocol.LogoutResponse.Parser.ParseFrom);
     static readonly grpc::Marshaller<global::Protocol.Movement> __Marshaller_protocol_Movement = grpc::Marshallers.Create((arg) => global::Google.Protobuf.MessageExtensions.ToByteArray(arg), global::Protocol.Movement.Parser.ParseFrom);
 
-    static readonly grpc::Method<global::Protocol.LoginRequest, global::Protocol.Login> __Method_login = new grpc::Method<global::Protocol.LoginRequest, global::Protocol.Login>(
+    static readonly grpc::Method<global::Protocol.Login, global::Protocol.GopherInfo> __Method_login = new grpc::Method<global::Protocol.Login, global::Protocol.GopherInfo>(
         grpc::MethodType.Unary,
         __ServiceName,
         "login",
-        __Marshaller_protocol_LoginRequest,
-        __Marshaller_protocol_Login);
+        __Marshaller_protocol_Login,
+        __Marshaller_protocol_GopherInfo);
 
-    static readonly grpc::Method<global::Protocol.Logout, global::Protocol.LogoutResponse> __Method_logout = new grpc::Method<global::Protocol.Logout, global::Protocol.LogoutResponse>(
+    static readonly grpc::Method<global::Protocol.Logout, global::Protocol.GopherInfo> __Method_logout = new grpc::Method<global::Protocol.Logout, global::Protocol.GopherInfo>(
         grpc::MethodType.Unary,
         __ServiceName,
         "logout",
         __Marshaller_protocol_Logout,
-        __Marshaller_protocol_LogoutResponse);
+        __Marshaller_protocol_GopherInfo);
 
     static readonly grpc::Method<global::Protocol.Movement, global::Protocol.Movement> __Method_move = new grpc::Method<global::Protocol.Movement, global::Protocol.Movement>(
         grpc::MethodType.DuplexStreaming,
@@ -48,12 +47,12 @@ namespace Protocol {
     /// <summary>Base class for server-side implementations of GopherService</summary>
     public abstract partial class GopherServiceBase
     {
-      public virtual global::System.Threading.Tasks.Task<global::Protocol.Login> login(global::Protocol.LoginRequest request, grpc::ServerCallContext context)
+      public virtual global::System.Threading.Tasks.Task<global::Protocol.GopherInfo> login(global::Protocol.Login request, grpc::ServerCallContext context)
       {
         throw new grpc::RpcException(new grpc::Status(grpc::StatusCode.Unimplemented, ""));
       }
 
-      public virtual global::System.Threading.Tasks.Task<global::Protocol.LogoutResponse> logout(global::Protocol.Logout request, grpc::ServerCallContext context)
+      public virtual global::System.Threading.Tasks.Task<global::Protocol.GopherInfo> logout(global::Protocol.Logout request, grpc::ServerCallContext context)
       {
         throw new grpc::RpcException(new grpc::Status(grpc::StatusCode.Unimplemented, ""));
       }
@@ -88,35 +87,35 @@ namespace Protocol {
       {
       }
 
-      public virtual global::Protocol.Login login(global::Protocol.LoginRequest request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+      public virtual global::Protocol.GopherInfo login(global::Protocol.Login request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
       {
         return login(request, new grpc::CallOptions(headers, deadline, cancellationToken));
       }
-      public virtual global::Protocol.Login login(global::Protocol.LoginRequest request, grpc::CallOptions options)
+      public virtual global::Protocol.GopherInfo login(global::Protocol.Login request, grpc::CallOptions options)
       {
         return CallInvoker.BlockingUnaryCall(__Method_login, null, options, request);
       }
-      public virtual grpc::AsyncUnaryCall<global::Protocol.Login> loginAsync(global::Protocol.LoginRequest request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+      public virtual grpc::AsyncUnaryCall<global::Protocol.GopherInfo> loginAsync(global::Protocol.Login request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
       {
         return loginAsync(request, new grpc::CallOptions(headers, deadline, cancellationToken));
       }
-      public virtual grpc::AsyncUnaryCall<global::Protocol.Login> loginAsync(global::Protocol.LoginRequest request, grpc::CallOptions options)
+      public virtual grpc::AsyncUnaryCall<global::Protocol.GopherInfo> loginAsync(global::Protocol.Login request, grpc::CallOptions options)
       {
         return CallInvoker.AsyncUnaryCall(__Method_login, null, options, request);
       }
-      public virtual global::Protocol.LogoutResponse logout(global::Protocol.Logout request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+      public virtual global::Protocol.GopherInfo logout(global::Protocol.Logout request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
       {
         return logout(request, new grpc::CallOptions(headers, deadline, cancellationToken));
       }
-      public virtual global::Protocol.LogoutResponse logout(global::Protocol.Logout request, grpc::CallOptions options)
+      public virtual global::Protocol.GopherInfo logout(global::Protocol.Logout request, grpc::CallOptions options)
       {
         return CallInvoker.BlockingUnaryCall(__Method_logout, null, options, request);
       }
-      public virtual grpc::AsyncUnaryCall<global::Protocol.LogoutResponse> logoutAsync(global::Protocol.Logout request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
+      public virtual grpc::AsyncUnaryCall<global::Protocol.GopherInfo> logoutAsync(global::Protocol.Logout request, grpc::Metadata headers = null, global::System.DateTime? deadline = null, global::System.Threading.CancellationToken cancellationToken = default(global::System.Threading.CancellationToken))
       {
         return logoutAsync(request, new grpc::CallOptions(headers, deadline, cancellationToken));
       }
-      public virtual grpc::AsyncUnaryCall<global::Protocol.LogoutResponse> logoutAsync(global::Protocol.Logout request, grpc::CallOptions options)
+      public virtual grpc::AsyncUnaryCall<global::Protocol.GopherInfo> logoutAsync(global::Protocol.Logout request, grpc::CallOptions options)
       {
         return CallInvoker.AsyncUnaryCall(__Method_logout, null, options, request);
       }
@@ -151,8 +150,8 @@ namespace Protocol {
     /// <param name="serviceImpl">An object implementing the server-side handling logic.</param>
     public static void BindService(grpc::ServiceBinderBase serviceBinder, GopherServiceBase serviceImpl)
     {
-      serviceBinder.AddMethod(__Method_login, serviceImpl == null ? null : new grpc::UnaryServerMethod<global::Protocol.LoginRequest, global::Protocol.Login>(serviceImpl.login));
-      serviceBinder.AddMethod(__Method_logout, serviceImpl == null ? null : new grpc::UnaryServerMethod<global::Protocol.Logout, global::Protocol.LogoutResponse>(serviceImpl.logout));
+      serviceBinder.AddMethod(__Method_login, serviceImpl == null ? null : new grpc::UnaryServerMethod<global::Protocol.Login, global::Protocol.GopherInfo>(serviceImpl.login));
+      serviceBinder.AddMethod(__Method_logout, serviceImpl == null ? null : new grpc::UnaryServerMethod<global::Protocol.Logout, global::Protocol.GopherInfo>(serviceImpl.logout));
       serviceBinder.AddMethod(__Method_move, serviceImpl == null ? null : new grpc::DuplexStreamingServerMethod<global::Protocol.Movement, global::Protocol.Movement>(serviceImpl.move));
     }
 

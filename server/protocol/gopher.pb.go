@@ -79,37 +79,6 @@ func (m *GopherInfo) GetY() int32 {
 	return 0
 }
 
-type LoginRequest struct {
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
-}
-
-func (m *LoginRequest) Reset()         { *m = LoginRequest{} }
-func (m *LoginRequest) String() string { return proto.CompactTextString(m) }
-func (*LoginRequest) ProtoMessage()    {}
-func (*LoginRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_df81d38ec75a57c2, []int{1}
-}
-
-func (m *LoginRequest) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_LoginRequest.Unmarshal(m, b)
-}
-func (m *LoginRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_LoginRequest.Marshal(b, m, deterministic)
-}
-func (m *LoginRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_LoginRequest.Merge(m, src)
-}
-func (m *LoginRequest) XXX_Size() int {
-	return xxx_messageInfo_LoginRequest.Size(m)
-}
-func (m *LoginRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_LoginRequest.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_LoginRequest proto.InternalMessageInfo
-
 type Login struct {
 	Name                 string   `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	X                    int32    `protobuf:"varint,2,opt,name=x,proto3" json:"x,omitempty"`
@@ -123,7 +92,7 @@ func (m *Login) Reset()         { *m = Login{} }
 func (m *Login) String() string { return proto.CompactTextString(m) }
 func (*Login) ProtoMessage()    {}
 func (*Login) Descriptor() ([]byte, []int) {
-	return fileDescriptor_df81d38ec75a57c2, []int{2}
+	return fileDescriptor_df81d38ec75a57c2, []int{1}
 }
 
 func (m *Login) XXX_Unmarshal(b []byte) error {
@@ -176,7 +145,7 @@ func (m *Logout) Reset()         { *m = Logout{} }
 func (m *Logout) String() string { return proto.CompactTextString(m) }
 func (*Logout) ProtoMessage()    {}
 func (*Logout) Descriptor() ([]byte, []int) {
-	return fileDescriptor_df81d38ec75a57c2, []int{3}
+	return fileDescriptor_df81d38ec75a57c2, []int{2}
 }
 
 func (m *Logout) XXX_Unmarshal(b []byte) error {
@@ -204,37 +173,6 @@ func (m *Logout) GetName() string {
 	return ""
 }
 
-type LogoutResponse struct {
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
-}
-
-func (m *LogoutResponse) Reset()         { *m = LogoutResponse{} }
-func (m *LogoutResponse) String() string { return proto.CompactTextString(m) }
-func (*LogoutResponse) ProtoMessage()    {}
-func (*LogoutResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_df81d38ec75a57c2, []int{4}
-}
-
-func (m *LogoutResponse) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_LogoutResponse.Unmarshal(m, b)
-}
-func (m *LogoutResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_LogoutResponse.Marshal(b, m, deterministic)
-}
-func (m *LogoutResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_LogoutResponse.Merge(m, src)
-}
-func (m *LogoutResponse) XXX_Size() int {
-	return xxx_messageInfo_LogoutResponse.Size(m)
-}
-func (m *LogoutResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_LogoutResponse.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_LogoutResponse proto.InternalMessageInfo
-
 type Movement struct {
 	// Types that are valid to be assigned to Event:
 	//	*Movement_Login
@@ -250,7 +188,7 @@ func (m *Movement) Reset()         { *m = Movement{} }
 func (m *Movement) String() string { return proto.CompactTextString(m) }
 func (*Movement) ProtoMessage()    {}
 func (*Movement) Descriptor() ([]byte, []int) {
-	return fileDescriptor_df81d38ec75a57c2, []int{5}
+	return fileDescriptor_df81d38ec75a57c2, []int{3}
 }
 
 func (m *Movement) XXX_Unmarshal(b []byte) error {
@@ -332,36 +270,32 @@ func (*Movement) XXX_OneofWrappers() []interface{} {
 
 func init() {
 	proto.RegisterType((*GopherInfo)(nil), "protocol.GopherInfo")
-	proto.RegisterType((*LoginRequest)(nil), "protocol.LoginRequest")
 	proto.RegisterType((*Login)(nil), "protocol.Login")
 	proto.RegisterType((*Logout)(nil), "protocol.Logout")
-	proto.RegisterType((*LogoutResponse)(nil), "protocol.LogoutResponse")
 	proto.RegisterType((*Movement)(nil), "protocol.Movement")
 }
 
 func init() { proto.RegisterFile("gopher.proto", fileDescriptor_df81d38ec75a57c2) }
 
 var fileDescriptor_df81d38ec75a57c2 = []byte{
-	// 297 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x94, 0x90, 0xc1, 0x4e, 0xc2, 0x40,
-	0x10, 0x86, 0x77, 0x95, 0x22, 0x0e, 0x88, 0x64, 0x62, 0x4c, 0x43, 0x3c, 0x90, 0xbd, 0x48, 0x38,
-	0x10, 0x53, 0x8d, 0x5e, 0x3c, 0x79, 0x11, 0x13, 0xbc, 0xac, 0x4f, 0xa0, 0x64, 0x40, 0x92, 0x76,
-	0xa7, 0xb6, 0xdb, 0x06, 0xde, 0xc3, 0x17, 0xf1, 0x0d, 0x0d, 0xdb, 0xd6, 0xc6, 0xca, 0xc5, 0xd3,
-	0xee, 0xcc, 0xff, 0xcf, 0xec, 0xb7, 0x3f, 0xf4, 0x56, 0x1c, 0xbf, 0x53, 0x32, 0x8d, 0x13, 0xb6,
-	0x8c, 0x1d, 0x77, 0x2c, 0x38, 0x54, 0xf7, 0x00, 0x8f, 0x4e, 0x79, 0x32, 0x4b, 0x46, 0x84, 0x96,
-	0x79, 0x8d, 0xc8, 0x97, 0x23, 0x39, 0x3e, 0xd6, 0xee, 0x8e, 0x3d, 0x90, 0x1b, 0xff, 0x60, 0x24,
-	0xc7, 0x9e, 0x96, 0x9b, 0x5d, 0xb5, 0xf5, 0x0f, 0x8b, 0x6a, 0xab, 0xfa, 0xd0, 0x9b, 0xf3, 0x6a,
-	0x6d, 0x34, 0x7d, 0x64, 0x94, 0x5a, 0x75, 0x07, 0x9e, 0xab, 0xff, 0xbd, 0xe8, 0x02, 0xda, 0x73,
-	0x5e, 0x71, 0x66, 0xf7, 0x4d, 0xaa, 0x01, 0xf4, 0x0b, 0x55, 0x53, 0x1a, 0xb3, 0x49, 0x49, 0x7d,
-	0x4a, 0xe8, 0x3c, 0x73, 0x4e, 0x11, 0x19, 0x8b, 0x97, 0xe0, 0x85, 0xbb, 0x57, 0xdd, 0x4c, 0x37,
-	0x38, 0x9d, 0x56, 0xbf, 0x9b, 0x3a, 0x98, 0x99, 0xd0, 0x85, 0x8e, 0x13, 0x68, 0x87, 0x6e, 0x8f,
-	0xc3, 0xe8, 0x06, 0x83, 0x5f, 0x4e, 0xce, 0xec, 0x4c, 0xe8, 0xd2, 0x81, 0x13, 0x68, 0xad, 0xcd,
-	0x92, 0x1d, 0x62, 0x37, 0x38, 0xab, 0x9d, 0x75, 0x5c, 0x33, 0xa1, 0x9d, 0xe7, 0xe1, 0x08, 0x3c,
-	0xca, 0xc9, 0xd8, 0xe0, 0x4b, 0xc2, 0x49, 0xa1, 0xbf, 0x50, 0x92, 0xaf, 0x17, 0x84, 0x41, 0xc9,
-	0x86, 0xe7, 0x0d, 0xaa, 0x32, 0xb2, 0x61, 0x93, 0x56, 0x09, 0xbc, 0xad, 0x30, 0xf1, 0x0f, 0xe0,
-	0xd0, 0x6f, 0x76, 0x7e, 0x22, 0x11, 0x78, 0x03, 0xad, 0x88, 0x73, 0x42, 0xac, 0x3d, 0x55, 0x46,
-	0xc3, 0x3d, 0x3d, 0x25, 0xc6, 0xf2, 0x4a, 0xbe, 0xb5, 0x9d, 0x70, 0xfd, 0x1d, 0x00, 0x00, 0xff,
-	0xff, 0x78, 0xed, 0xa1, 0x4d, 0x22, 0x02, 0x00, 0x00,
+	// 269 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x94, 0x90, 0xc1, 0x4a, 0xc3, 0x40,
+	0x10, 0x86, 0xb3, 0x9a, 0xc4, 0x3a, 0xa9, 0x28, 0x83, 0x87, 0x50, 0x3c, 0x94, 0xbd, 0x18, 0x7a,
+	0x08, 0x65, 0x15, 0xbc, 0x78, 0xf2, 0x62, 0x84, 0x7a, 0x59, 0x9f, 0x40, 0xcb, 0x36, 0x06, 0x92,
+	0x9d, 0x12, 0xb6, 0xa1, 0x7d, 0x0f, 0xdf, 0xc2, 0x97, 0x94, 0x4e, 0x1a, 0x82, 0x1a, 0x0f, 0x9e,
+	0x92, 0xd9, 0xff, 0xff, 0xe7, 0xff, 0x18, 0x18, 0xe7, 0xb4, 0x7e, 0x37, 0x75, 0xba, 0xae, 0xc9,
+	0x11, 0x8e, 0xf8, 0xb3, 0xa4, 0x52, 0xde, 0x03, 0x3c, 0xb2, 0xf2, 0x64, 0x57, 0x84, 0x08, 0xbe,
+	0x7d, 0xad, 0x4c, 0x2c, 0xa6, 0x22, 0x39, 0xd5, 0xfc, 0x8f, 0x63, 0x10, 0xdb, 0xf8, 0x68, 0x2a,
+	0x92, 0x40, 0x8b, 0xed, 0x7e, 0xda, 0xc5, 0xc7, 0xed, 0xb4, 0x93, 0x77, 0x10, 0x2c, 0x28, 0x2f,
+	0xec, 0xbf, 0x83, 0x57, 0x10, 0x2e, 0x28, 0xa7, 0x8d, 0x1b, 0x4a, 0xca, 0x0f, 0x01, 0xa3, 0x67,
+	0x6a, 0x4c, 0x65, 0xac, 0xc3, 0x6b, 0x08, 0xca, 0x7d, 0x07, 0x3b, 0x22, 0x75, 0x9e, 0x76, 0xec,
+	0x29, 0x57, 0x67, 0x9e, 0x6e, 0x75, 0x9c, 0x41, 0x58, 0xf2, 0x4e, 0x2e, 0x8d, 0xd4, 0xc5, 0x37,
+	0x27, 0x6d, 0x5c, 0xe6, 0xe9, 0x83, 0x03, 0x67, 0xe0, 0x17, 0x76, 0x45, 0x0c, 0x14, 0xa9, 0xcb,
+	0xde, 0xd9, 0x1f, 0x23, 0xf3, 0x34, 0x7b, 0x1e, 0x4e, 0x20, 0x30, 0x8d, 0xb1, 0x4e, 0x7d, 0x0a,
+	0x38, 0x6b, 0xf5, 0x17, 0x53, 0x37, 0xc5, 0xd2, 0xe0, 0xfc, 0xc0, 0x86, 0x3f, 0xa9, 0x26, 0x83,
+	0x2b, 0xa5, 0x87, 0xaa, 0x83, 0xc4, 0x5f, 0x78, 0x7f, 0x66, 0x6e, 0xc1, 0xaf, 0xa8, 0x31, 0x88,
+	0xbd, 0xde, 0x5d, 0x67, 0x32, 0xf0, 0x26, 0xbd, 0x44, 0xcc, 0xc5, 0x5b, 0xc8, 0xc2, 0xcd, 0x57,
+	0x00, 0x00, 0x00, 0xff, 0xff, 0x54, 0xaf, 0x4e, 0x6f, 0xfa, 0x01, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -376,8 +310,8 @@ const _ = grpc.SupportPackageIsVersion4
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type GopherServiceClient interface {
-	Login(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*Login, error)
-	Logout(ctx context.Context, in *Logout, opts ...grpc.CallOption) (*LogoutResponse, error)
+	Login(ctx context.Context, in *Login, opts ...grpc.CallOption) (*GopherInfo, error)
+	Logout(ctx context.Context, in *Logout, opts ...grpc.CallOption) (*GopherInfo, error)
 	Move(ctx context.Context, opts ...grpc.CallOption) (GopherService_MoveClient, error)
 }
 
@@ -389,8 +323,8 @@ func NewGopherServiceClient(cc *grpc.ClientConn) GopherServiceClient {
 	return &gopherServiceClient{cc}
 }
 
-func (c *gopherServiceClient) Login(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*Login, error) {
-	out := new(Login)
+func (c *gopherServiceClient) Login(ctx context.Context, in *Login, opts ...grpc.CallOption) (*GopherInfo, error) {
+	out := new(GopherInfo)
 	err := c.cc.Invoke(ctx, "/protocol.GopherService/login", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -398,8 +332,8 @@ func (c *gopherServiceClient) Login(ctx context.Context, in *LoginRequest, opts 
 	return out, nil
 }
 
-func (c *gopherServiceClient) Logout(ctx context.Context, in *Logout, opts ...grpc.CallOption) (*LogoutResponse, error) {
-	out := new(LogoutResponse)
+func (c *gopherServiceClient) Logout(ctx context.Context, in *Logout, opts ...grpc.CallOption) (*GopherInfo, error) {
+	out := new(GopherInfo)
 	err := c.cc.Invoke(ctx, "/protocol.GopherService/logout", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -440,8 +374,8 @@ func (x *gopherServiceMoveClient) Recv() (*Movement, error) {
 
 // GopherServiceServer is the server API for GopherService service.
 type GopherServiceServer interface {
-	Login(context.Context, *LoginRequest) (*Login, error)
-	Logout(context.Context, *Logout) (*LogoutResponse, error)
+	Login(context.Context, *Login) (*GopherInfo, error)
+	Logout(context.Context, *Logout) (*GopherInfo, error)
 	Move(GopherService_MoveServer) error
 }
 
@@ -449,10 +383,10 @@ type GopherServiceServer interface {
 type UnimplementedGopherServiceServer struct {
 }
 
-func (*UnimplementedGopherServiceServer) Login(ctx context.Context, req *LoginRequest) (*Login, error) {
+func (*UnimplementedGopherServiceServer) Login(ctx context.Context, req *Login) (*GopherInfo, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Login not implemented")
 }
-func (*UnimplementedGopherServiceServer) Logout(ctx context.Context, req *Logout) (*LogoutResponse, error) {
+func (*UnimplementedGopherServiceServer) Logout(ctx context.Context, req *Logout) (*GopherInfo, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Logout not implemented")
 }
 func (*UnimplementedGopherServiceServer) Move(srv GopherService_MoveServer) error {
@@ -464,7 +398,7 @@ func RegisterGopherServiceServer(s *grpc.Server, srv GopherServiceServer) {
 }
 
 func _GopherService_Login_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(LoginRequest)
+	in := new(Login)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -476,7 +410,7 @@ func _GopherService_Login_Handler(srv interface{}, ctx context.Context, dec func
 		FullMethod: "/protocol.GopherService/Login",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(GopherServiceServer).Login(ctx, req.(*LoginRequest))
+		return srv.(GopherServiceServer).Login(ctx, req.(*Login))
 	}
 	return interceptor(ctx, in, info, handler)
 }
